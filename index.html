@@ -467,19 +467,6 @@ input[type="text"]::placeholder { color: var(--ink-faint); font-style: italic; }
   transform: translateY(-2px);
   box-shadow: var(--shadow-2);
 }
-.card::before {
-  content: '';
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 5px;
-  background: var(--lvl-color, var(--ink-faint));
-  opacity: 0.85;
-}
-.card.C2 { --lvl-color: var(--C2); }
-.card.C1 { --lvl-color: var(--C1); }
-.card.B2 { --lvl-color: var(--B2); }
-.card.B1 { --lvl-color: var(--B1); }
-.card.A2 { --lvl-color: var(--A2); }
 
 .card-head {
   display: flex;
@@ -523,16 +510,6 @@ input[type="text"]::placeholder { color: var(--ink-faint); font-style: italic; }
   color: var(--ink-faint);
 }
 
-.reason {
-  margin-top: 8px;
-  font-size: 15px;
-  color: var(--ink-3);
-  font-style: italic;
-  line-height: 1.55;
-  padding-right: 22px;
-}
-.card.exam .reason { filter: blur(4px); transition: filter .2s; }
-.card.exam:hover .reason { filter: blur(0); }
 
 .chev {
   position: absolute;
@@ -1461,7 +1438,7 @@ function render() {
   const filtered = words.filter(x =>
     (active === "ALL" || x.level === active) &&
     (!q || x.w.toLowerCase().includes(q) || x.meaning.toLowerCase().includes(q) ||
-     x.reason.toLowerCase().includes(q) || x.root.toLowerCase().includes(q))
+     x.root.toLowerCase().includes(q))
   );
 
   const grid = document.getElementById('grid');
@@ -1496,7 +1473,6 @@ function render() {
         <span class="badge ${x.level}">${x.level}</span>
         <span class="pos">${x.pos}</span>
       </div>
-      <p class="reason">${x.reason}</p>
       <div class="detail" onclick="event.stopPropagation()">
         <p class="meaning">${x.meaning}</p>
         <div class="criteria">${x.criteria.map(c=>`<span class="crit">${c}</span>`).join('')}</div>
