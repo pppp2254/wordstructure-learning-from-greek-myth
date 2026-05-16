@@ -2,696 +2,1560 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Athens Myth — Vocabulary Explorer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+<meta name="theme-color" content="#e8dcc0">
+<title>Word Structure — 
+Athena vs Poseidon</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream: #F5F0E8;
-  --parchment: #EDE6D6;
-  --ink: #1C1810;
-  --ink-light: #4A4235;
-  --ink-faint: #9A8F7E;
-  --gold: #C4973A;
-  --gold-light: #F0D98A;
-  --C2-bg: #2D1B69; --C2-fg: #E8DFFF;
-  --C1-bg: #0D4A35; --C1-fg: #C8F0E0;
-  --B2-bg: #0D3A6B; --B2-fg: #C8E4FF;
-  --B1-bg: #7A3D00; --B1-fg: #FFE0B0;
-  --A2-bg: #6B1A0D; --A2-fg: #FFD5CC;
-  --prefix-bg: #FFF3CD; --prefix-fg: #7A4F00;
-  --root-bg: #D4EDDA; --root-fg: #0D4A20;
-  --suffix-bg: #CCE5FF; --suffix-fg: #0D3060;
-  --border: rgba(28,24,16,0.12);
-  --shadow: 0 2px 16px rgba(28,24,16,0.08);
+  /* Parchment palette pulled from the slide */
+  --parch-0:   #f4ead4;   /* lightest cream */
+  --parch-1:   #ead9b3;   /* mid parchment */
+  --parch-2:   #d8c190;   /* darker antique */
+  --parch-3:   #b89a63;   /* aged edge */
+  --ink:       #1f1a14;   /* near-black ink */
+  --ink-2:     #3a2f22;
+  --ink-3:     #6b5a42;
+  --ink-faint: #8f7d5e;
+  --indigo:    #2b2670;   /* deep title indigo from slide */
+  --indigo-2:  #3e3a8a;
+  --indigo-3:  #5a55b8;
+  --gold:      #a8843a;
+  --gold-2:    #8a6a26;
+  --rouge:     #8c2f25;   /* faded Pompeii red */
+  --olive:     #4f6232;   /* Athena's olive */
+  --sea:       #2a5c7a;   /* Poseidon's sea */
+  --rule:      rgba(31,26,20,0.18);
+  --rule-soft: rgba(31,26,20,0.10);
+  --card:      #fbf7ec;
+  --card-pure: #ffffff;
+  --shadow-1:  0 2px 4px rgba(60,42,12,0.06), 0 8px 24px rgba(60,42,12,0.10);
+  --shadow-2:  0 6px 18px rgba(60,42,12,0.18);
+
+  /* CEFR semantic */
+  --C2: #3a2475;  --C2-soft: #ecdfff;
+  --C1: #1a5c3a;  --C1-soft: #d8efdf;
+  --B2: #1a4c80;  --B2-soft: #d6e6f6;
+  --B1: #8a5614;  --B1-soft: #f5e2c2;
+  --A2: #7a1f0f;  --A2-soft: #f3d4cc;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html { -webkit-text-size-adjust: 100%; }
 body {
-  background-color: var(--cream);
-  background-image:
-    radial-gradient(ellipse at 20% 10%, rgba(196,151,58,0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 90%, rgba(196,151,58,0.06) 0%, transparent 50%);
+  font-family: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
   color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
+  background: var(--parch-1);
+  background-image:
+    /* soft top-down haze */
+    radial-gradient(120% 60% at 50% 0%, rgba(255,248,225,0.55) 0%, rgba(255,248,225,0) 60%),
+    /* warm gold bottom glow */
+    radial-gradient(80% 50% at 50% 100%, rgba(168,132,58,0.18) 0%, rgba(168,132,58,0) 60%),
+    /* paper grain */
+    radial-gradient(rgba(60,42,12,0.05) 1px, transparent 1px),
+    /* base parchment gradient */
+    linear-gradient(180deg, #ecd9ad 0%, #e7d09b 40%, #d8bc7c 100%);
+  background-size: auto, auto, 3px 3px, auto;
   min-height: 100vh;
-  padding-bottom: 4rem;
+  overflow-x: hidden;
+  line-height: 1.5;
 }
 
-/* HEADER */
-header {
-  text-align: center;
-  padding: 3rem 1.5rem 2rem;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 2rem;
-  position: relative;
-  overflow: hidden;
+/* ====== GREEK KEY MEANDER BORDER ====== */
+.meander {
+  height: 22px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='44' height='22' viewBox='0 0 44 22'><g fill='none' stroke='%231f1a14' stroke-width='2'><path d='M0,21 L0,5 L16,5 L16,17 L8,17 L8,9 L12,9 L12,13'/><path d='M22,21 L22,5 L38,5 L38,17 L30,17 L30,9 L34,9 L34,13'/></g></svg>");
+  background-repeat: repeat-x;
+  background-position: center;
+  opacity: 0.85;
 }
-header::before {
-  content: '⚡';
-  position: absolute;
-  font-size: 180px;
-  opacity: 0.04;
-  top: -30px;
+.meander.top    { border-bottom: 1px solid var(--ink); }
+.meander.bottom { border-top: 1px solid var(--ink); }
+
+/* ====== IONIC COLUMNS (decorative, edges) ====== */
+.column-frame {
+  position: fixed;
+  top: 22px;
+  bottom: 22px;
+  width: 84px;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.55;
+}
+.column-frame.left  { left: 0; }
+.column-frame.right { right: 0; transform: scaleX(-1); }
+.column-frame svg { width: 100%; height: 100%; display: block; }
+@media (max-width: 720px) {
+  .column-frame { width: 42px; opacity: 0.38; }
+}
+@media (max-width: 420px) {
+  .column-frame { display: none; }
+}
+
+/* ====== ACROPOLIS HAZE ====== */
+.acropolis {
+  position: fixed;
+  bottom: 22px;
   left: 50%;
   transform: translateX(-50%);
+  width: min(1100px, 100vw);
+  height: 360px;
   pointer-events: none;
+  opacity: 0.18;
+  z-index: 1;
+  mask-image: linear-gradient(180deg, transparent 0%, black 50%, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 50%, black 80%, transparent 100%);
 }
-.subtitle-tag {
-  display: inline-block;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold);
-  border: 1px solid var(--gold);
-  padding: 3px 12px;
-  border-radius: 2px;
-  margin-bottom: 1rem;
-}
-h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.8rem, 5vw, 2.8rem);
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--ink);
-  margin-bottom: 0.5rem;
-}
-h1 em {
-  font-style: italic;
-  color: var(--gold);
-}
-.header-desc {
-  font-size: 14px;
-  color: var(--ink-faint);
-  max-width: 480px;
+.acropolis svg { width: 100%; height: 100%; display: block; }
+
+/* ====== LAYOUT ====== */
+.page {
+  position: relative;
+  z-index: 10;
+  max-width: 980px;
   margin: 0 auto;
+  padding: 28px 20px 4rem;
+}
+@media (min-width: 720px) {
+  .page { padding: 40px 96px 4rem; }
+}
+
+/* ====== HERO ====== */
+.hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 0 18px;
+  position: relative;
+}
+.hero-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: center;
+  padding: 0 4px;
+}
+
+/* Decorative figures flanking the hero (like the slide's Mucha figures) */
+.hero-figure {
+  flex: 0 0 auto;
+  width: clamp(90px, 14vw, 150px);
+  height: auto;
+  align-self: flex-end;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 8px rgba(60,42,12,0.25));
+  z-index: 6;
+  position: relative;
+}
+.hero-figure.left  { transform: rotate(-2deg); }
+.hero-figure.right { transform: rotate(2deg) scaleX(-1); }
+@media (max-width: 520px) {
+  .hero-figure { width: 70px; }
+}
+@media (max-width: 380px) {
+  .hero-figure { display: none; }
+}
+
+/* Small ornamental character above footer */
+.footer-figure {
+  display: block;
+  margin: 32px auto 0;
+  width: 110px;
+  height: auto;
+  filter: drop-shadow(0 3px 6px rgba(60,42,12,0.18));
+}
+
+/* Scroll tag for "Unit I" — mimics the slide's torn scroll */
+.scroll-tag {
+  display: inline-block;
+  position: relative;
+  padding: 10px 38px 12px;
+  margin-bottom: 22px;
+  font-family: 'IM Fell English', 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink);
+  background: #faf2dc;
+  border-top: 1px solid rgba(60,42,12,0.35);
+  border-bottom: 1px solid rgba(60,42,12,0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.6),
+    0 2px 6px rgba(60,42,12,0.12);
+  letter-spacing: 0.02em;
+}
+.scroll-tag::before,
+.scroll-tag::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  width: 22px;
+  background:
+    radial-gradient(circle at 50% 50%, #c9b079 0 4px, transparent 5px),
+    linear-gradient(180deg, #e6cf94 0%, #c9aa66 50%, #a8843a 100%);
+  border: 1px solid rgba(60,42,12,0.4);
+}
+.scroll-tag::before {
+  left: -10px;
+  border-radius: 4px 2px 2px 4px;
+  transform: skewY(-8deg);
+}
+.scroll-tag::after {
+  right: -10px;
+  border-radius: 2px 4px 4px 2px;
+  transform: skewY(8deg);
+}
+
+h1.display {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(2.1rem, 7.5vw, 3.6rem);
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  color: var(--indigo);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5), 0 2px 6px rgba(43,38,112,0.15);
+  margin: 6px 0 18px;
+}
+h1.display .small {
+  display: block;
+  font-size: 0.55em;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  margin-bottom: 6px;
+  color: var(--indigo-2);
+  opacity: 0.85;
+}
+
+.kicker {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.6vw, 1.25rem);
+  color: var(--ink-2);
+  max-width: 36ch;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.divider-orn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 28px auto 8px;
+  color: var(--gold-2);
+}
+.divider-orn::before,
+.divider-orn::after {
+  content: '';
+  flex: 0 0 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor 50%, transparent);
+}
+.divider-orn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* ====== INTRO CARD (matches white rounded card on slide template) ====== */
+.intro-card {
+  background: var(--card-pure);
+  border: 1px solid var(--rule);
+  border-radius: 22px;
+  padding: 22px 24px;
+  margin: 18px 0 28px;
+  box-shadow: var(--shadow-1);
+  position: relative;
+}
+.intro-card .label-pill {
+  display: inline-block;
+  background: var(--card-pure);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--indigo);
+  position: absolute;
+  top: -16px;
+  left: 22px;
+  box-shadow: var(--shadow-1);
+}
+.intro-card h2 {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--indigo);
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.intro-card p {
+  font-size: 16px;
+  color: var(--ink-2);
   line-height: 1.6;
 }
-
-/* LEGEND */
-.legend {
+.intro-card p + p { margin-top: 8px; }
+.intro-card .legend {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--rule);
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
-  justify-content: center;
-  padding: 1rem 1.5rem;
-  margin: 0 auto 1.5rem;
-  max-width: 860px;
-  font-size: 11px;
-  font-family: 'DM Mono', monospace;
-  color: var(--ink-faint);
+  gap: 6px 14px;
+  font-size: 13px;
+  color: var(--ink-3);
 }
-.legend strong { color: var(--ink-light); }
-.leg { display: flex; align-items: center; gap: 5px; }
-.leg-dot { width: 7px; height: 7px; border-radius: 50%; }
+.intro-card .legend strong {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ink-2);
+  width: 100%;
+  margin-bottom: 2px;
+}
+.intro-card .legend .leg {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.intro-card .legend .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
 
-/* CONTROLS */
+/* ====== CONTROLS ====== */
 .controls {
-  max-width: 860px;
-  margin: 0 auto 1rem;
-  padding: 0 1.5rem;
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
+  margin-bottom: 14px;
 }
 .search-wrap {
-  position: relative;
   flex: 1;
-  min-width: 180px;
+  min-width: 200px;
+  position: relative;
 }
 .search-wrap svg {
   position: absolute;
-  left: 10px;
+  left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  opacity: 0.35;
+  width: 16px; height: 16px;
+  color: var(--ink-faint);
   pointer-events: none;
 }
 input[type="text"] {
   width: 100%;
-  padding: 9px 12px 9px 34px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: white;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
+  padding: 12px 14px 12px 38px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: rgba(255,253,246,0.85);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
   color: var(--ink);
   outline: none;
-  transition: border-color .15s, box-shadow .15s;
+  transition: all .15s ease;
+  -webkit-appearance: none;
 }
 input[type="text"]:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(196,151,58,0.12);
-}
-.filter-btn {
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
   background: white;
-  color: var(--ink-light);
-  cursor: pointer;
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  transition: all .15s;
-  letter-spacing: 0.03em;
+  border-color: var(--indigo-3);
+  box-shadow: 0 0 0 4px rgba(90,85,184,0.14);
 }
-.filter-btn:hover { border-color: var(--ink-faint); }
-.filter-btn.active { color: white; border-color: transparent; }
-.filter-btn[data-level="ALL"].active { background: var(--ink); }
-.filter-btn[data-level="C2"].active { background: var(--C2-bg); }
-.filter-btn[data-level="C1"].active { background: var(--C1-bg); }
-.filter-btn[data-level="B2"].active { background: var(--B2-bg); }
-.filter-btn[data-level="B1"].active { background: var(--B1-bg); }
-.filter-btn[data-level="A2"].active { background: var(--A2-bg); }
+input[type="text"]::placeholder { color: var(--ink-faint); font-style: italic; }
 
-/* STATS */
-.stats {
-  max-width: 860px;
-  margin: 0 auto 1.5rem;
-  padding: 0 1.5rem;
+.filters {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
-.stat {
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-family: 'DM Mono', monospace;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-}
-.stat.C2 { background: var(--C2-bg); color: var(--C2-fg); }
-.stat.C1 { background: var(--C1-bg); color: var(--C1-fg); }
-.stat.B2 { background: var(--B2-bg); color: var(--B2-fg); }
-.stat.B1 { background: var(--B1-bg); color: var(--B1-fg); }
-.stat.A2 { background: var(--A2-bg); color: var(--A2-fg); }
-
-/* HINT */
-.hint {
-  max-width: 860px;
-  margin: 0 auto 1rem;
-  padding: 0 1.5rem;
+.fbtn {
+  border: 1px solid var(--rule);
+  background: rgba(255,253,246,0.85);
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
   font-size: 12px;
-  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  color: var(--ink-2);
+  padding: 9px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.fbtn:hover { background: white; }
+.fbtn.active {
+  color: white;
+  border-color: transparent;
+  box-shadow: var(--shadow-1);
+}
+.fbtn[data-level="ALL"].active { background: var(--ink); }
+.fbtn[data-level="C2"].active  { background: var(--C2); }
+.fbtn[data-level="C1"].active  { background: var(--C1); }
+.fbtn[data-level="B2"].active  { background: var(--B2); }
+.fbtn[data-level="B1"].active  { background: var(--B1); }
+.fbtn[data-level="A2"].active  { background: var(--A2); }
+.fbtn .count {
+  display: inline-block;
+  margin-left: 6px;
+  opacity: 0.6;
+  font-size: 10px;
+}
+.fbtn.active .count { opacity: 0.85; }
+
+.toolbar-right {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+.icon-btn {
+  width: 40px; height: 40px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: rgba(255,253,246,0.85);
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: all .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.icon-btn:hover { background: white; color: var(--indigo); }
+.icon-btn.on { background: var(--indigo); color: white; border-color: transparent; }
+.icon-btn svg { width: 18px; height: 18px; }
+
+.result-line {
   font-style: italic;
+  color: var(--ink-3);
+  font-size: 14px;
+  padding: 0 4px 10px;
 }
 
-/* GRID */
+/* ====== GRID ====== */
 .grid {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: 1fr;
   gap: 12px;
 }
+@media (min-width: 640px) {
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+}
+@media (min-width: 900px) {
+  .grid.dense-off { grid-template-columns: repeat(2, 1fr); }
+  .grid.dense-on  { grid-template-columns: repeat(2, 1fr); }
+}
 
-/* CARD */
+/* ====== CARD ====== */
 .card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1rem 1.1rem;
-  cursor: pointer;
-  transition: border-color .15s, box-shadow .15s, transform .1s;
   position: relative;
+  background: var(--card-pure);
+  border: 1px solid var(--rule);
+  border-radius: 18px;
+  padding: 18px 18px 16px;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
 }
 .card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0;
-  width: 3px;
-  height: 100%;
-  border-radius: 10px 0 0 10px;
-  opacity: 0;
-  transition: opacity .15s;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: var(--lvl-color, var(--ink-faint));
+  opacity: 0.85;
 }
-.card.C2::before { background: var(--C2-bg); }
-.card.C1::before { background: var(--C1-bg); }
-.card.B2::before { background: var(--B2-bg); }
-.card.B1::before { background: var(--B1-bg); }
-.card.A2::before { background: var(--A2-bg); }
-.card:hover { border-color: rgba(28,24,16,0.2); box-shadow: var(--shadow); transform: translateY(-1px); }
-.card:hover::before, .card.open::before { opacity: 1; }
-.card.open { border-color: rgba(28,24,16,0.18); box-shadow: var(--shadow); }
+.card.C2 { --lvl-color: var(--C2); }
+.card.C1 { --lvl-color: var(--C1); }
+.card.B2 { --lvl-color: var(--B2); }
+.card.B1 { --lvl-color: var(--B1); }
+.card.A2 { --lvl-color: var(--A2); }
 
-.card-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 .word {
-  font-family: 'Playfair Display', serif;
-  font-size: 17px;
-  font-weight: 700;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: clamp(17px, 2.1vw, 22px);
   color: var(--ink);
-  flex: 1;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+.card.exam .word {
+  letter-spacing: 0.18em;
 }
 .badge {
-  padding: 2px 9px;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  padding: 3px 9px;
   border-radius: 4px;
-  font-size: 10px;
-  font-family: 'DM Mono', monospace;
-  font-weight: 500;
-  letter-spacing: 0.06em;
+  color: white;
   flex-shrink: 0;
 }
-.badge.C2 { background: var(--C2-bg); color: var(--C2-fg); }
-.badge.C1 { background: var(--C1-bg); color: var(--C1-fg); }
-.badge.B2 { background: var(--B2-bg); color: var(--B2-fg); }
-.badge.B1 { background: var(--B1-bg); color: var(--B1-fg); }
-.badge.A2 { background: var(--A2-bg); color: var(--A2-fg); }
+.badge.C2 { background: var(--C2); }
+.badge.C1 { background: var(--C1); }
+.badge.B2 { background: var(--B2); }
+.badge.B1 { background: var(--B1); }
+.badge.A2 { background: var(--A2); }
 .pos {
-  font-size: 11px;
-  font-family: 'DM Mono', monospace;
-  color: var(--ink-faint);
-  background: var(--parchment);
-  padding: 2px 7px;
-  border-radius: 3px;
-}
-
-.card-reason {
-  font-size: 11px;
-  color: var(--ink-faint);
+  font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  margin-top: 6px;
-  line-height: 1.5;
+  font-size: 14px;
+  color: var(--ink-faint);
 }
 
-/* DETAIL */
+.reason {
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--ink-3);
+  font-style: italic;
+  line-height: 1.55;
+  padding-right: 22px;
+}
+.card.exam .reason { filter: blur(4px); transition: filter .2s; }
+.card.exam:hover .reason { filter: blur(0); }
+
+.chev {
+  position: absolute;
+  top: 16px;
+  right: 14px;
+  width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ink-faint);
+  transition: transform .2s ease;
+}
+.chev svg { width: 14px; height: 14px; }
+.card.open .chev { transform: rotate(180deg); color: var(--indigo); }
+
+/* ====== DETAIL (expanded) ====== */
 .detail {
   display: none;
-  margin-top: 12px;
-  border-top: 1px solid var(--parchment);
-  padding-top: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--rule);
 }
-.card.open .detail { display: block; }
+.card.open .detail { display: block; animation: fadeUp .25s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
 .meaning {
-  font-size: 13px;
-  color: var(--ink-light);
-  line-height: 1.6;
-  margin-bottom: 10px;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin-bottom: 12px;
+}
+.meaning::before {
+  content: '“';
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  color: var(--gold);
+  line-height: 0;
+  vertical-align: -8px;
+  margin-right: 4px;
 }
 
 .criteria {
   display: flex;
-  gap: 5px;
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  gap: 5px;
+  margin-bottom: 14px;
 }
 .crit {
-  font-size: 10px;
-  font-family: 'DM Mono', monospace;
-  padding: 2px 8px;
-  border-radius: 3px;
-  border: 1px solid var(--border);
-  color: var(--ink-faint);
-  background: var(--parchment);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(168,132,58,0.10);
+  color: var(--gold-2);
+  border: 1px solid rgba(168,132,58,0.18);
 }
 
-.morph {
+/* Morphology — the marquee feature */
+.morpho-label {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--ink-3);
+  margin-bottom: 8px;
+}
+.morpho {
   display: flex;
-  gap: 5px;
+  gap: 6px;
   flex-wrap: wrap;
-  margin-bottom: 10px;
-  align-items: flex-end;
+  align-items: stretch;
+  margin-bottom: 12px;
 }
-.morph-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-.morph-label { font-size: 9px; font-family: 'DM Mono', monospace; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; }
-.morph-part { padding: 4px 10px; border-radius: 4px; font-size: 12px; font-family: 'DM Mono', monospace; font-weight: 500; }
-.prefix { background: var(--prefix-bg); color: var(--prefix-fg); }
-.root { background: var(--root-bg); color: var(--root-fg); }
-.suffix { background: var(--suffix-bg); color: var(--suffix-fg); }
-.morph-plus { font-size: 14px; color: var(--ink-faint); padding-bottom: 4px; }
-
-.morph-notes { font-size: 11px; color: var(--ink-faint); line-height: 1.8; }
-.morph-notes b { color: var(--ink-light); }
-
-.chevron {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 16px;
-  height: 16px;
-  color: var(--ink-faint);
-  transition: transform .2s;
-}
-.card.open .chevron { transform: rotate(180deg); }
-
-/* EMPTY */
-.none {
+.morph-tile {
+  flex: 1 1 0;
+  min-width: 60px;
   text-align: center;
-  padding: 4rem 2rem;
+  border-radius: 12px;
+  padding: 10px 6px 12px;
+  border: 1px solid transparent;
+  position: relative;
+}
+.morph-tile .tile-part {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.morph-tile .tile-label {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+.morph-tile .tile-part {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+}
+.morph-tile.prefix { background: #fdf1d4; border-color: rgba(168,132,58,0.35); color: #6b4a0a; }
+.morph-tile.root   { background: #dbe9d3; border-color: rgba(79,98,50,0.35); color: #2f3f1c; }
+.morph-tile.suffix { background: #d4e1ef; border-color: rgba(42,92,122,0.30); color: #1a3852; }
+
+.morph-plus {
+  align-self: center;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 18px;
   color: var(--ink-faint);
-  font-family: 'Playfair Display', serif;
+  padding: 0 2px;
+}
+
+.etym {
+  font-size: 14px;
+  color: var(--ink-3);
+  line-height: 1.7;
+  padding: 12px 14px;
+  background: rgba(255,248,225,0.6);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+}
+.etym strong {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--ink-2);
+  margin-right: 4px;
+}
+.etym .row + .row { margin-top: 3px; }
+.etym .greek { font-style: italic; color: var(--olive); }
+.etym .latin { font-style: italic; color: var(--rouge); }
+
+.example {
+  margin-top: 12px;
+  font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: 16px;
-  grid-column: 1/-1;
+  line-height: 1.6;
+  color: var(--ink-2);
+  padding: 10px 0 0 0;
+  border-top: 1px dashed var(--rule);
 }
-
-/* FOOTER */
-footer {
-  text-align: center;
-  margin-top: 3rem;
-  font-size: 12px;
+.example .label {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.16em;
   color: var(--ink-faint);
-  font-family: 'DM Mono', monospace;
+  margin-right: 8px;
 }
-footer a { color: var(--gold); text-decoration: none; }
-
-/* DECO CHARACTERS */
-.deco-char {
-  position: absolute;
-  bottom: 0;
-  width: 90px;
-  height: auto;
-  opacity: 0.82;
-  pointer-events: none;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.10));
+.example mark {
+  background: linear-gradient(180deg, transparent 60%, rgba(168,132,58,0.35) 60%);
+  color: inherit;
+  padding: 0 2px;
 }
-.deco-left  { left: 2vw; }
-.deco-right { right: 2vw; }
-.deco-mid   { left: 50%; transform: translateX(-50%) scaleX(-1); display: none; }
 
-/* QR SECTION */
-.qr-section {
-  max-width: 860px;
-  margin: 2.5rem auto 0;
-  padding: 1.5rem 1.5rem;
+.empty {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 4rem 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink-faint);
+}
+.empty::before {
+  content: '⚱';
+  display: block;
+  font-size: 36px;
+  margin-bottom: 12px;
+  opacity: 0.4;
+}
+
+/* ====== PASSAGE SECTION ====== */
+.section-title {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: var(--shadow);
+  gap: 16px;
+  margin: 56px 0 16px;
+}
+.section-title::before,
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ink) 40%, var(--ink) 60%, transparent);
+  opacity: 0.3;
+}
+.section-title h2 {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.18em;
+  color: var(--indigo);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.passage {
+  background: var(--card-pure);
+  border: 1px solid var(--rule);
+  border-radius: 22px;
+  padding: 26px 26px 24px;
+  box-shadow: var(--shadow-1);
+  font-family: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--ink-2);
+  position: relative;
+}
+.passage h3 {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  color: var(--indigo);
+  margin-bottom: 6px;
+}
+.passage h4 {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.10em;
+  color: var(--indigo-2);
+  margin: 22px 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.passage h4::before {
+  content: '';
+  display: inline-block;
+  width: 22px;
+  height: 1px;
+  background: var(--gold);
+}
+.passage blockquote {
+  margin: 12px 0;
+  padding: 8px 16px;
+  border-left: 3px solid var(--gold);
+  background: rgba(255,248,225,0.5);
+  font-style: italic;
+  color: var(--ink-2);
+  border-radius: 0 6px 6px 0;
+}
+.passage .source-line {
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--rule);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink-faint);
+  text-align: right;
+}
+.passage .source-line a { color: var(--gold-2); text-decoration: none; }
+.passage h3 + .passage-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--ink-faint);
+  margin-bottom: 18px;
+  font-size: 15px;
+}
+.passage p { margin-bottom: 14px; }
+.passage p:last-child { margin-bottom: 0; }
+.passage .first-letter::first-letter {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 3.2em;
+  float: left;
+  line-height: 0.9;
+  padding: 6px 8px 0 0;
+  color: var(--indigo);
+}
+.passage .keyword {
+  background: linear-gradient(180deg, transparent 55%, rgba(168,132,58,0.30) 55%);
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background .15s;
+  border-radius: 1px;
+}
+.passage .keyword:hover {
+  background: linear-gradient(180deg, transparent 55%, rgba(168,132,58,0.65) 55%);
+}
+.passage .keyword[data-level="C2"] { box-shadow: inset 0 -2px 0 var(--C2); }
+.passage .keyword[data-level="C1"] { box-shadow: inset 0 -2px 0 var(--C1); }
+.passage .keyword[data-level="B2"] { box-shadow: inset 0 -2px 0 var(--B2); }
+.passage .keyword[data-level="B1"] { box-shadow: inset 0 -2px 0 var(--B1); }
+.passage .keyword[data-level="A2"] { box-shadow: inset 0 -2px 0 var(--A2); }
+
+.passage-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 18px auto 0;
+  padding: 10px 18px;
+  background: rgba(255,253,246,0.7);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: all .15s;
+}
+.passage-toggle:hover { background: white; color: var(--indigo); }
+.passage-wrap { position: relative; }
+.passage-wrap.collapsed .passage {
+  max-height: 240px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, black 0%, black 65%, transparent 100%);
+          mask-image: linear-gradient(180deg, black 0%, black 65%, transparent 100%);
+}
+.passage-wrap .passage-toggle {
+  margin: 14px auto 0;
+  display: flex;
+  justify-content: center;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ====== QR SECTION ====== */
+.qr-section {
+  margin: 48px 0 0;
+  background: var(--card-pure);
+  border: 1px solid var(--rule);
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: var(--shadow-1);
+  display: flex;
+  align-items: center;
+  gap: 22px;
   flex-wrap: wrap;
 }
 .qr-box {
   flex-shrink: 0;
-  padding: 8px;
+  padding: 10px;
   background: white;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 12px;
+  border: 1px solid var(--rule);
+  display: flex;
 }
-.qr-info { flex: 1; min-width: 180px; }
+.qr-info { flex: 1; min-width: 200px; }
 .qr-info h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 4px;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  color: var(--indigo);
+  margin-bottom: 6px;
 }
 .qr-info p {
-  font-size: 12px;
-  color: var(--ink-faint);
-  line-height: 1.6;
+  font-size: 16px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  margin-bottom: 6px;
 }
-.qr-info a {
+.qr-info .url {
   display: inline-block;
-  margin-top: 6px;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  color: var(--gold);
+  font-family: 'Cormorant Garamond', monospace;
+  font-size: 13px;
+  color: var(--gold-2);
   word-break: break-all;
+  font-style: italic;
 }
 
-@media (max-width: 520px) {
-  .grid { grid-template-columns: 1fr; }
-  .controls { gap: 6px; }
-  .filter-btn { padding: 7px 11px; font-size: 11px; }
-  .deco-char { width: 60px; }
-  .qr-section { flex-direction: column; align-items: flex-start; }
+/* ====== FOOTER ====== */
+footer {
+  margin-top: 36px;
+  padding: 20px 0;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-faint);
+  border-top: 1px solid var(--rule-soft);
 }
+footer .orn { display: block; margin-bottom: 8px; color: var(--gold-2); }
+
+/* ====== TWEAKS PANEL ====== */
+.tweaks {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 50;
+  background: var(--card-pure);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 14px 16px 12px;
+  box-shadow: var(--shadow-2);
+  font-family: 'Cormorant Garamond', serif;
+  display: none;
+  min-width: 240px;
+  max-width: calc(100vw - 40px);
+}
+.tweaks.open { display: block; animation: fadeUp .2s ease; }
+.tweaks h4 {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--indigo);
+  margin-bottom: 10px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.tweaks h4 .close {
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--ink-faint);
+  letter-spacing: 0;
+  padding: 0 4px;
+}
+.tweaks .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.tweaks .row + .row { border-top: 1px dashed var(--rule-soft); }
+.tweaks .switch {
+  width: 44px; height: 24px;
+  background: var(--parch-2);
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  transition: background .15s;
+}
+.tweaks .switch::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: white;
+  top: 3px; left: 3px;
+  transition: transform .15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.tweaks .switch.on { background: var(--indigo); }
+.tweaks .switch.on::after { transform: translateX(20px); }
+
+/* Tweak FAB toggle */
+.tweak-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 49;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--indigo);
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-2);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  transition: transform .15s;
+}
+.tweak-fab:hover { transform: scale(1.06); }
+.tweak-fab svg { width: 22px; height: 22px; }
+
+/* ====== HIGHLIGHT FLASH (when navigating from passage to card) ====== */
+@keyframes flashCard {
+  0%, 100% { box-shadow: var(--shadow-1); }
+  30%, 60% { box-shadow: 0 0 0 4px rgba(43,38,112,0.30), var(--shadow-2); }
+}
+.card.flash { animation: flashCard 1.2s ease; }
+
+/* ====== UTIL ====== */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
 </style>
 </head>
 <body>
 
-<header>
-  <img src="source/images (1).jpeg" alt="" class="deco-char deco-left">
-  <img src="source/images.jpeg"     alt="" class="deco-char deco-right">
-  <div class="subtitle-tag">CEFR Vocabulary Explorer</div>
-  <h1>Athena vs Poseidon<br><em>Word Study</em></h1>
-  <p class="header-desc">Hard words from the Athens myth passage — categorized by level with prefix, root &amp; suffix breakdown.</p>
-</header>
+<div class="meander top" aria-hidden="true"></div>
 
-<div class="legend">
-  <strong>Level based on →</strong>
-  <span class="leg"><span class="leg-dot" style="background:#C4973A"></span>Frequency</span>
-  <span class="leg"><span class="leg-dot" style="background:#0D4A35"></span>Register</span>
-  <span class="leg"><span class="leg-dot" style="background:#2D1B69"></span>Decodability</span>
-  <span class="leg"><span class="leg-dot" style="background:#6B1A0D"></span>Figurative use</span>
+<!-- Ionic columns flanking -->
+<div class="column-frame left" aria-hidden="true">
+  <svg viewBox="0 0 60 800" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="colG" x1="0" x2="1">
+        <stop offset="0" stop-color="#c9a96a"/>
+        <stop offset="0.5" stop-color="#eedba0"/>
+        <stop offset="1" stop-color="#8a6a2b"/>
+      </linearGradient>
+    </defs>
+    <!-- Capital (volutes) -->
+    <g fill="url(#colG)" stroke="#5b4218" stroke-width="0.8">
+      <rect x="0" y="0" width="60" height="14"/>
+      <rect x="4" y="14" width="52" height="6"/>
+      <path d="M2 20 q4 8 12 8 q8 0 8 -10 v6 h16 v-6 q0 10 8 10 q8 0 12 -8 v8 h-56 z"/>
+      <rect x="6" y="34" width="48" height="4"/>
+    </g>
+    <!-- Shaft with flutes -->
+    <g stroke="#5b4218" stroke-width="0.6" fill="url(#colG)">
+      <rect x="8" y="38" width="44" height="720"/>
+    </g>
+    <g stroke="#7a5a26" stroke-width="0.5" opacity="0.7">
+      <line x1="14" y1="40" x2="14" y2="758"/>
+      <line x1="20" y1="40" x2="20" y2="758"/>
+      <line x1="26" y1="40" x2="26" y2="758"/>
+      <line x1="32" y1="40" x2="32" y2="758"/>
+      <line x1="38" y1="40" x2="38" y2="758"/>
+      <line x1="44" y1="40" x2="44" y2="758"/>
+    </g>
+    <!-- Base -->
+    <g fill="url(#colG)" stroke="#5b4218" stroke-width="0.8">
+      <rect x="6" y="758" width="48" height="6"/>
+      <rect x="2" y="764" width="56" height="10"/>
+      <rect x="0" y="774" width="60" height="14"/>
+    </g>
+  </svg>
+</div>
+<div class="column-frame right" aria-hidden="true">
+  <svg viewBox="0 0 60 800" preserveAspectRatio="none">
+    <use href="#colG"/>
+    <g fill="#d9b977" stroke="#5b4218" stroke-width="0.8">
+      <rect x="0" y="0" width="60" height="14"/>
+      <rect x="4" y="14" width="52" height="6"/>
+      <path d="M2 20 q4 8 12 8 q8 0 8 -10 v6 h16 v-6 q0 10 8 10 q8 0 12 -8 v8 h-56 z"/>
+      <rect x="6" y="34" width="48" height="4"/>
+    </g>
+    <g stroke="#5b4218" stroke-width="0.6" fill="#d9b977">
+      <rect x="8" y="38" width="44" height="720"/>
+    </g>
+    <g stroke="#7a5a26" stroke-width="0.5" opacity="0.7">
+      <line x1="14" y1="40" x2="14" y2="758"/>
+      <line x1="20" y1="40" x2="20" y2="758"/>
+      <line x1="26" y1="40" x2="26" y2="758"/>
+      <line x1="32" y1="40" x2="32" y2="758"/>
+      <line x1="38" y1="40" x2="38" y2="758"/>
+      <line x1="44" y1="40" x2="44" y2="758"/>
+    </g>
+    <g fill="#d9b977" stroke="#5b4218" stroke-width="0.8">
+      <rect x="6" y="758" width="48" height="6"/>
+      <rect x="2" y="764" width="56" height="10"/>
+      <rect x="0" y="774" width="60" height="14"/>
+    </g>
+  </svg>
 </div>
 
-<div class="controls">
-  <div class="search-wrap">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="search" placeholder="Search words or meanings…" oninput="render()">
+<!-- Acropolis backdrop (faint) -->
+<div class="acropolis" aria-hidden="true">
+  <svg viewBox="0 0 1000 360" preserveAspectRatio="xMidYMax meet">
+    <!-- distant mountains -->
+    <path d="M0 280 L120 200 L220 240 L320 180 L440 230 L560 190 L680 220 L820 170 L920 220 L1000 200 L1000 360 L0 360 Z" fill="#5a4a2c" opacity="0.4"/>
+    <!-- nearer hill -->
+    <path d="M0 320 L80 290 L180 305 L300 285 L420 300 L560 280 L700 295 L840 285 L1000 290 L1000 360 L0 360 Z" fill="#4a3c20" opacity="0.55"/>
+    <!-- Parthenon silhouette atop hill -->
+    <g transform="translate(420 200)" fill="#3a2f1c">
+      <rect x="0" y="50" width="160" height="6"/>
+      <g>
+        <rect x="6"   y="20" width="8" height="30"/>
+        <rect x="24"  y="20" width="8" height="30"/>
+        <rect x="42"  y="20" width="8" height="30"/>
+        <rect x="60"  y="20" width="8" height="30"/>
+        <rect x="78"  y="20" width="8" height="30"/>
+        <rect x="96"  y="20" width="8" height="30"/>
+        <rect x="114" y="20" width="8" height="30"/>
+        <rect x="132" y="20" width="8" height="30"/>
+        <rect x="150" y="20" width="8" height="30"/>
+      </g>
+      <rect x="-4" y="14" width="168" height="8"/>
+      <polygon points="-4,14 80,-6 164,14"/>
+    </g>
+  </svg>
+</div>
+
+<main class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <img src="source/figure-left.png" alt="" class="hero-figure left" aria-hidden="true">
+    <div class="hero-text">
+      <div class="scroll-tag" style="padding: 1px 38px 12px">UNIT ONE</div>
+    <h1 class="display">
+      <span class="small">
+</span>
+      Word Structure
+    </h1>
+    <p class="kicker">Vocabulary from the myth of <em>
+Athena vs Poseidon</em> </p>
+    <div class="divider-orn" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z" fill="currentColor"/></svg>
+    </div>
+    </div>
+    <img src="source/figure-right.png" alt="" class="hero-figure right" aria-hidden="true">
+  </section>
+
+  <!-- INTRO CARD -->
+  <section class="intro-card" style="display:none">
+    <span class="label-pill">How to use</span>
+    <p>Tap any word card to reveal its meaning, etymology, and the prefix–root–suffix breakdown. Filter by CEFR level to focus on what you're learning, or search by word or meaning.</p>
+    <div class="legend">
+      <strong>Level is decided by →</strong>
+      <span class="leg"><span class="dot" style="background:var(--gold)"></span>Frequency</span>
+      <span class="leg"><span class="dot" style="background:var(--olive)"></span>Register</span>
+      <span class="leg"><span class="dot" style="background:var(--indigo)"></span>Decodability</span>
+      <span class="leg"><span class="dot" style="background:var(--rouge)"></span>Figurative use</span>
+    </div>
+  </section>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search" placeholder="Seek a word or meaning…" aria-label="Search">
+    </div>
   </div>
-  <button class="filter-btn active" data-level="ALL" onclick="setFilter('ALL')">All</button>
-  <button class="filter-btn" data-level="C2" onclick="setFilter('C2')">C2</button>
-  <button class="filter-btn" data-level="C1" onclick="setFilter('C1')">C1</button>
-  <button class="filter-btn" data-level="B2" onclick="setFilter('B2')">B2</button>
-  <button class="filter-btn" data-level="B1" onclick="setFilter('B1')">B1</button>
-  <button class="filter-btn" data-level="A2" onclick="setFilter('A2')">A2</button>
-</div>
+  <div class="controls" id="filters" role="tablist" aria-label="Filter by CEFR level">
+    <button class="fbtn active" data-level="ALL">All</button>
+    <button class="fbtn" data-level="C2">C2</button>
+    <button class="fbtn" data-level="C1">C1</button>
+    <button class="fbtn" data-level="B2">B2</button>
+    <button class="fbtn" data-level="B1">B1</button>
+    <button class="fbtn" data-level="A2">A2</button>
 
-<div class="stats" id="stats"></div>
-<p class="hint">↓ Tap any card to expand the morphology breakdown</p>
-<div class="grid" id="grid"></div>
-
-<div style="max-width:860px;margin:2rem auto 0;padding:0 1.5rem;display:flex;justify-content:center;">
-  <img src="source/images (2).jpeg" alt="" style="width:80px;opacity:0.75;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.10));">
-</div>
-
-<div class="qr-section" style="max-width:860px;margin:1.2rem auto 0;">
-  <div class="qr-box" id="qrcode"></div>
-  <div class="qr-info">
-    <h3>Scan to open on any device</h3>
-    <p>Share this vocabulary explorer with classmates — just point your phone camera at the QR code.</p>
-    <a href="https://pppp2254.github.io/wordstructure-learning-from-greek-myth/" target="_blank">
-      pppp2254.github.io/wordstructure-learning-from-greek-myth/
-    </a>
   </div>
-</div>
 
-<footer>
-  <p>Athena vs Poseidon · Vocabulary Explorer · Built for classroom use</p>
-</footer>
+  <p class="result-line" id="resultLine"></p>
+
+  <div class="grid" id="grid"></div>
+
+  <!-- PASSAGE SECTION -->
+  <div class="section-title">
+    <h2>The Source · The Myth</h2>
+  </div>
+  <div class="passage-wrap collapsed" id="passageWrap">
+    <article class="passage" id="passage">
+      <h3>
+Athena vs Poseidon: The Contest for the Name of Athens</h3>
+      <div class="passage-sub">From the legends of ancient Greece</div>
+
+      <p class="first-letter">In ancient Greece, myths were more than mere stories — they shaped the identity, values, and destiny of entire cities. One of the most captivating myths is the legendary contest of Athena vs Poseidon, two powerful Olympian gods who competed fiercely for the honour of naming and <span class="keyword" data-word="protection" data-level="A2">protecting</span> the city we now know as Athens.</p>
+
+      <p>According to the myth, the gods Athena and Poseidon competed by offering gifts to the young city, then ruled by King Cecrops. Athena's olive tree, <span class="keyword" data-word="symbolizing" data-level="B1">symbolizing</span> peace, <span class="keyword" data-word="prosperity" data-level="B1">prosperity</span>, and <span class="keyword" data-word="resilience" data-level="B2">resilience</span>, triumphed over Poseidon's saltwater spring, leading the city to adopt her name. The story not only explains the origin of Athens' name but also <span class="keyword" data-word="encapsulates" data-level="C1">encapsulates</span> the values that would define its historical course, from its Mycenaean origins to its golden age under Pericles.</p>
+
+      <h4>The Founding of Cecropia</h4>
+      <p>Long ago, before Athens was called by its famous name, it was known as Cecropia, named after its <span class="keyword" data-word="mythical" data-level="C1">mythical</span> founder, King Cecrops. Cecrops was an unusual figure — half man and half serpent — who ruled wisely over this promising city-state. As Cecropia grew prosperous and beautiful, the gods on Mount Olympus took notice. Two gods in particular — Poseidon, mighty god of the sea, and Athena, wise goddess of wisdom — both desired to become the city's patron deity.</p>
+
+      <h4>The Divine Competition</h4>
+      <p>To avoid a <span class="keyword" data-word="destructive" data-level="A2">destructive</span> conflict between these powerful gods, Zeus, king of Olympus, <span class="keyword" data-word="intervened" data-level="B1">intervened</span>. He proposed a contest: Poseidon and Athena would each present a gift to Cecrops and his people. Whichever gift proved more valuable and <span class="keyword" data-word="beneficial" data-level="B1">beneficial</span> would determine the city's patron deity and give it its new name.</p>
+
+      <h4>Poseidon's Gift · The Saltwater Spring</h4>
+      <p>On a clear day under bright skies, King Cecrops led his people to the hill of Acropolis — the highest point in the city — to witness this divine <span class="keyword" data-word="competition" data-level="A2">competition</span>. Poseidon stepped forward first. With a dramatic flourish of his trident — a three-pronged spear <span class="keyword" data-word="symbolizing" data-level="B1">symbolizing</span> his <span class="keyword" data-word="dominion" data-level="B2">dominion</span> over the seas — he struck the ground forcefully. Immediately, water sprang forth from the earth in a dazzling fountain.</p>
+      <p>At first glance, Poseidon's gift seemed impressive — a source of fresh water could mean <span class="keyword" data-word="prosperity" data-level="B1">prosperity</span> for any city. But when the citizens tasted it, their excitement turned to <span class="keyword" data-word="disappointment" data-level="A2">disappointment</span>: the water was salty like seawater itself. It could neither quench thirst nor nourish crops.</p>
+
+      <h4>Athena's Gift · The Olive Tree</h4>
+      <p>Next came Athena's turn. Quietly but confidently, she knelt down and planted something small into the earth. Before everyone's astonished eyes grew an olive tree — lush with silvery leaves and laden with ripe olives. Athena explained that her gift would provide food from olives, oil for cooking and lamps, wood for building homes and boats, and even shade from the hot sun.</p>
+
+      <h4>The Choice of Athens</h4>
+      <p>The choice became clear to King Cecrops and his people. While Poseidon's saltwater spring symbolised raw power but limited usefulness, Athena's olive tree represented wisdom, <span class="keyword" data-word="practicality" data-level="B1">practicality</span>, peace, and lasting <span class="keyword" data-word="prosperity" data-level="B1">prosperity</span>.</p>
+      <p>Athena's triumph led the city to be renamed in her honour, cementing her role as its protector and spiritual guide. Thus began Athens' legacy under Athena's <span class="keyword" data-word="protection" data-level="A2">protection</span> — a city destined for greatness through wisdom rather than brute strength alone.</p>
+
+      <h4>Poseidon's Wrath</h4>
+      <p>But Poseidon, god of the seas, wasn't one to take defeat lightly. He was furious. Imagine a storm at sea, waves crashing, the wind howling — that's how angry Poseidon felt. He couldn't undo his gift, the useless saltwater spring, but he could certainly make the Athenians regret their choice.</p>
+      <p>The sea god cursed Athens with water <span class="keyword" data-word="scarcity" data-level="B2">scarcity</span>, a <span class="keyword" data-word="mythological" data-level="B2">mythological</span> explanation for the region's historical struggles with drought. According to the ancient writer Apollodorus:</p>
+      <blockquote>“Poseidon in hot anger flooded the Thriasian plain and laid Attica under the sea.”</blockquote>
+      <p>Even with this hardship, the Athenians remained faithful to Athena. They understood that true strength wasn't about immediate, flashy displays of power, but about long-term well-being. They had chosen wisdom, and that, along with the olive tree's gifts, would help them overcome Poseidon's wrath and build a great city.</p>
+
+      <h4>Poseidon's Trident &amp; the Sea's Ambiguity</h4>
+      <p>Poseidon's gift, though rejected, symbolised the dual nature of the sea: a source of trade and naval power but also <span class="keyword" data-word="unpredictability" data-level="B2">unpredictability</span> and danger — a powerful <span class="keyword" data-word="ambiguity" data-level="C2">ambiguity</span>. Athens' reliance on <span class="keyword" data-word="maritime" data-level="B2">maritime</span> commerce, <span class="keyword" data-word="exemplified" data-level="C2">exemplified</span> by its port at Piraeus, <span class="keyword" data-word="necessitated" data-level="C2">necessitated</span> a <span class="keyword" data-word="pragmatic" data-level="B2">pragmatic</span> <span class="keyword" data-word="reverence" data-level="C1">reverence</span> for Poseidon despite his <span class="keyword" data-word="mythological" data-level="B2">mythological</span> defeat. The god's association with horses, another gift mentioned in some variants, further linked him to Athenian military and civic rituals.</p>
+      <p>In Athens, both Athena and Poseidon were worshipped. The Erechtheion, a temple on the Acropolis, was dedicated to both of them. Even though Poseidon lost the contest, he was still a very important god to the Athenians — they recognised both Athena's <span class="keyword" data-word="patronage" data-level="C1">patronage</span> and Poseidon's power, honouring them side by side.</p>
+
+      <p class="source-line">Adapted from <a href="https://www.greekmyths-greekmythology.com/athena-vs-poseidon-contest-name/" target="_blank" rel="noopener">greekmyths-greekmythology.com</a></p>
+    </article>
+    <button class="passage-toggle" id="passageToggle">▾ Read the full passage</button>
+  </div>
+
+  <img src="source/athena.png" alt="" class="footer-figure" aria-hidden="true">
+  <footer>❦
+Athena vs Poseidon </footer>
+</main>
+
+<div class="meander bottom" aria-hidden="true"></div>
 
 <script>
-const words=[
-  {w:"necessitated",level:"C2",pos:"verb",
-   meaning:"Made something unavoidable or absolutely required",
-   reason:"Formal/academic register; rarely used in speech; passive/impersonal tone marks it as advanced writing",
-   criteria:["low frequency","formal register","not in everyday speech"],
-   prefix:"necess-",root:"necess",suffix:"-ated",
-   pM:"necess- = unavoidable (Latin: necesse)",rM:"unavoidable/essential (Latin)",sM:"-ated = past tense verb"},
-  {w:"exemplified",level:"C2",pos:"verb",
-   meaning:"Was a typical example of something; illustrated clearly",
-   reason:"Academic/formal verb; used in written analysis; requires understanding of abstract argument structure",
-   criteria:["academic register","formal written use","low spoken frequency"],
-   prefix:"ex-",root:"empl",suffix:"-ified",
-   pM:"ex- = out (Latin)",rM:"example/sample (Latin: exemplum)",sM:"-ified = made into, past tense"},
-  {w:"ambiguity",level:"C2",pos:"noun",
-   meaning:"The state of having more than one possible meaning or interpretation",
-   reason:"Abstract concept requiring metalinguistic awareness; used in academic and critical analysis",
-   criteria:["abstract meaning","academic register","analytical use"],
-   prefix:"ambi-",root:"ig",suffix:"-uity",
-   pM:"ambi- = both sides/around (Latin)",rM:"to drive/lead (Latin: agere)",sM:"-uity = state or quality"},
+/* ============ DATA ============ */
+const words = [
+  // C2
+  { w:"necessitated", level:"C2", pos:"verb",
+    meaning:"Made something unavoidable or absolutely required.",
+    reason:"Formal/academic register; passive, impersonal tone marks it as advanced writing.",
+    criteria:["low frequency","formal register","not in everyday speech"],
+    prefix:"ne-", root:"cess", suffix:"-itated",
+    pM:{lang:"latin", text:"ne- = not (Latin)"},
+    rM:{lang:"latin", text:"cedere = to yield, give way (Latin)"},
+    sM:{lang:"latin", text:"-itated = past-tense verbal ending"},
+    sentence:"Athens' reliance on maritime commerce <mark>necessitated</mark> a pragmatic reverence for Poseidon." },
+  { w:"exemplified", level:"C2", pos:"verb",
+    meaning:"Was a typical example of something; illustrated clearly.",
+    reason:"Academic verb; used in written analysis; requires abstract argument structure.",
+    criteria:["academic register","formal written use","low spoken frequency"],
+    prefix:"ex-", root:"empl", suffix:"-ified",
+    pM:{lang:"latin", text:"ex- = out, from (Latin)"},
+    rM:{lang:"latin", text:"exemplum = sample, example (Latin)"},
+    sM:{lang:"latin", text:"-ified = made into; past tense"},
+    sentence:"The port at Piraeus <mark>exemplified</mark> Athens' maritime ambitions." },
+  { w:"ambiguity", level:"C2", pos:"noun",
+    meaning:"The state of having more than one possible meaning or interpretation.",
+    reason:"Abstract concept; requires metalinguistic awareness; academic/analytical use.",
+    criteria:["abstract meaning","academic register","analytical use"],
+    prefix:"ambi-", root:"ig", suffix:"-uity",
+    pM:{lang:"latin", text:"ambi- = both sides, around (Latin)"},
+    rM:{lang:"latin", text:"agere = to drive, lead (Latin)"},
+    sM:{lang:"latin", text:"-uity = state or quality of"},
+    sentence:"Poseidon's gift symbolized the sea's powerful <mark>ambiguity</mark>." },
 
-  {w:"encapsulates",level:"C1",pos:"verb",
-   meaning:"Expresses the essential features of something briefly and clearly",
-   reason:"Metaphorical — not literally 'put in a capsule'; common in academic writing; formal register",
-   criteria:["metaphorical meaning","formal register","academic writing"],
-   prefix:"en-",root:"capsul",suffix:"-ates",
-   pM:"en- = into (Latin)",rM:"small container (Latin: capsula)",sM:"-ates = 3rd person singular"},
-  {w:"patronage",level:"C1",pos:"noun",
-   meaning:"Support or protection given by a powerful person, deity, or institution",
-   reason:"Formal/historical register; concept requires cultural knowledge; not common in everyday speech",
-   criteria:["cultural knowledge needed","formal register","low frequency"],
-   prefix:"patron-",root:"patron",suffix:"-age",
-   pM:"patron- = protector (Latin: patronus)",rM:"father/protector (Latin: pater)",sM:"-age = state or result of"},
-  {w:"reverence",level:"C1",pos:"noun",
-   meaning:"Deep respect and admiration, especially toward something sacred",
-   reason:"Formal and literary; nuance between plain 'respect' and deep spiritual admiration is advanced",
-   criteria:["nuanced meaning","literary/formal","low spoken frequency"],
-   prefix:"re-",root:"ver",suffix:"-ence",
-   pM:"re- = intensifier (Latin)",rM:"to fear/respect (Latin: vereri)",sM:"-ence = state or quality"},
-  {w:"mythical",level:"C1",pos:"adj",
-   meaning:"Existing only in myth; or so impressive it seems unreal",
-   reason:"The figurative sense ('mythical status') goes beyond the literal; requires understanding of idiomatic extension",
-   criteria:["figurative/idiomatic use","dual meaning","nuance required"],
-   prefix:"myth-",root:"myth",suffix:"-ical",
-   pM:"myth- = story/legend (Greek: mythos)",rM:"story (Greek)",sM:"-ical = of or relating to"},
+  // C1
+  { w:"encapsulates", level:"C1", pos:"verb",
+    meaning:"Expresses the essential features of something briefly and clearly.",
+    reason:"Metaphorical — not literally 'in a capsule'; formal academic writing.",
+    criteria:["metaphorical meaning","formal register","academic writing"],
+    prefix:"en-", root:"capsul", suffix:"-ates",
+    pM:{lang:"latin", text:"en- = into (Latin)"},
+    rM:{lang:"latin", text:"capsula = small container (Latin)"},
+    sM:{lang:"latin", text:"-ates = 3rd-person singular"},
+    sentence:"The myth <mark>encapsulates</mark> the values that defined the city." },
+  { w:"patronage", level:"C1", pos:"noun",
+    meaning:"Support or protection given by a powerful person, deity, or institution.",
+    reason:"Formal/historical register; requires cultural knowledge; rare in everyday speech.",
+    criteria:["cultural knowledge needed","formal register","low frequency"],
+    prefix:"patron-", root:"patron", suffix:"-age",
+    pM:{lang:"latin", text:"patron- = protector (Latin: patronus)"},
+    rM:{lang:"latin", text:"pater = father, protector (Latin)"},
+    sM:{lang:"latin", text:"-age = state or result of"},
+    sentence:"Athena's <mark>patronage</mark> became the city's mythical foundation." },
+  { w:"reverence", level:"C1", pos:"noun",
+    meaning:"Deep respect and admiration, especially toward something sacred.",
+    reason:"Formal/literary; nuance between 'respect' and deep spiritual admiration is advanced.",
+    criteria:["nuanced meaning","literary/formal","low spoken frequency"],
+    prefix:"re-", root:"ver", suffix:"-ence",
+    pM:{lang:"latin", text:"re- = intensifier (Latin)"},
+    rM:{lang:"latin", text:"vereri = to fear, to respect (Latin)"},
+    sM:{lang:"latin", text:"-ence = state or quality of"},
+    sentence:"Pragmatic <mark>reverence</mark> for Poseidon kept his cult alive." },
+  { w:"mythical", level:"C1", pos:"adj",
+    meaning:"Existing only in myth; or so impressive it seems unreal.",
+    reason:"Figurative sense ('mythical status') goes beyond the literal; idiomatic extension.",
+    criteria:["figurative/idiomatic use","dual meaning","nuance required"],
+    prefix:"myth-", root:"myth", suffix:"-ical",
+    pM:{lang:"greek", text:"myth- = story (Greek: mythos)"},
+    rM:{lang:"greek", text:"mythos = story, tale (Greek)"},
+    sM:{lang:"latin", text:"-ical = of or relating to"},
+    sentence:"Cecrops was a <mark>mythical</mark> founder — half man, half serpent." },
 
-  {w:"unpredictability",level:"B2",pos:"noun",
-   meaning:"The quality of being impossible to foresee",
-   reason:"Fully decodable: un- + predict + -able + -ity; 'predict' is B1; stacking affixes pushes it to B2",
-   criteria:["decodable from parts","compound affix","B1 base word"],
-   prefix:"un-",root:"predict",suffix:"-ability",
-   pM:"un- = not (Old English)",rM:"to say before (Latin: praedicere)",sM:"-ability = quality of being able"},
-  {w:"mythological",level:"B2",pos:"adj",
-   meaning:"Relating to myths and ancient legendary stories",
-   reason:"Fully decodable; 'myth' known at A2, '-logy' at B1; long but transparent meaning",
-   criteria:["fully decodable","common root","transparent meaning"],
-   prefix:"mytho-",root:"log",suffix:"-ical",
-   pM:"mytho- = story (Greek: mythos)",rM:"word/study (Greek: logos)",sM:"-ical = relating to"},
-  {w:"resilience",level:"B2",pos:"noun",
-   meaning:"The ability to recover quickly from difficulty or setbacks",
-   reason:"Common in psychology and news; non-obvious etymology (Latin 'salire'); requires exposure",
-   criteria:["non-obvious etymology","common in media","abstract concept"],
-   prefix:"re-",root:"sili",suffix:"-ence",
-   pM:"re- = back (Latin)",rM:"to spring/jump (Latin: salire)",sM:"-ence = state or quality"},
-  {w:"dominion",level:"B2",pos:"noun",
-   meaning:"Power and authority over a territory or people",
-   reason:"Formal/historical word; appears in non-fiction; slightly archaic feel",
-   criteria:["formal/archaic register","historical context","moderate frequency"],
-   prefix:"domin-",root:"domin",suffix:"-ion",
-   pM:"domin- = lord/master (Latin: dominus)",rM:"to rule (Latin: dominari)",sM:"-ion = state or condition"},
-  {w:"maritime",level:"B2",pos:"adj",
-   meaning:"Connected to the sea, ships, or navigation",
-   reason:"Topic-specific vocabulary; appears in geography/history texts; not everyday conversation",
-   criteria:["topic-specific","non-fiction register","moderate frequency"],
-   prefix:"mari-",root:"mar",suffix:"-itime",
-   pM:"mari- = sea (Latin: mare)",rM:"sea (Latin: mare)",sM:"-itime = adjective suffix"},
-  {w:"scarcity",level:"B2",pos:"noun",
-   meaning:"A shortage; not having enough of something",
-   reason:"Economics/social science word; abstract but common in news and academic contexts",
-   criteria:["academic/news register","abstract noun","moderate frequency"],
-   prefix:null,root:"scarc",suffix:"-ity",
-   pM:null,rM:"scarce/limited (Old French: escars)",sM:"-ity = state or condition"},
-  {w:"pragmatic",level:"B2",pos:"adj",
-   meaning:"Dealing with things practically rather than theoretically",
-   reason:"Used in news and professional contexts; concept is clear but word form requires exposure",
-   criteria:["professional register","moderate frequency","non-transparent form"],
-   prefix:null,root:"pragmat",suffix:"-ic",
-   pM:null,rM:"action/deed (Greek: pragma)",sM:"-ic = relating to"},
+  // B2
+  { w:"unpredictability", level:"B2", pos:"noun",
+    meaning:"The quality of being impossible to foresee.",
+    reason:"Fully decodable: un- + predict + -able + -ity; stacking affixes pushes it to B2.",
+    criteria:["decodable from parts","compound affix","B1 base word"],
+    prefix:"un-", root:"predict", suffix:"-ability",
+    pM:{lang:"latin", text:"un- = not (Old English)"},
+    rM:{lang:"latin", text:"praedicere = to say beforehand (Latin)"},
+    sM:{lang:"latin", text:"-ability = quality of being able"},
+    sentence:"The sea symbolized trade but also <mark>unpredictability</mark>." },
+  { w:"mythological", level:"B2", pos:"adj",
+    meaning:"Relating to myths and ancient legendary stories.",
+    reason:"Fully decodable; 'myth' is A2, '-logy' is B1; long but transparent.",
+    criteria:["fully decodable","common root","transparent meaning"],
+    prefix:"mytho-", root:"log", suffix:"-ical",
+    pM:{lang:"greek", text:"mythos = story (Greek)"},
+    rM:{lang:"greek", text:"logos = word, study (Greek)"},
+    sM:{lang:"latin", text:"-ical = relating to"},
+    sentence:"Athenians honoured Poseidon despite his <mark>mythological</mark> defeat." },
+  { w:"resilience", level:"B2", pos:"noun",
+    meaning:"The ability to recover quickly from difficulty or setbacks.",
+    reason:"Common in psychology and news; non-obvious Latin etymology; needs exposure.",
+    criteria:["non-obvious etymology","common in media","abstract concept"],
+    prefix:"re-", root:"sili", suffix:"-ence",
+    pM:{lang:"latin", text:"re- = back (Latin)"},
+    rM:{lang:"latin", text:"salire = to spring, jump (Latin)"},
+    sM:{lang:"latin", text:"-ence = state or quality of"},
+    sentence:"The olive tree symbolised peace and <mark>resilience</mark>." },
+  { w:"dominion", level:"B2", pos:"noun",
+    meaning:"Power and authority over a territory or people.",
+    reason:"Formal/historical word; appears in non-fiction; slightly archaic feel.",
+    criteria:["formal/archaic register","historical context","moderate frequency"],
+    prefix:"domin-", root:"domin", suffix:"-ion",
+    pM:{lang:"latin", text:"dominus = lord, master (Latin)"},
+    rM:{lang:"latin", text:"dominari = to rule (Latin)"},
+    sM:{lang:"latin", text:"-ion = state or condition"},
+    sentence:"His trident symbolised <mark>dominion</mark> over the seas." },
+  { w:"maritime", level:"B2", pos:"adj",
+    meaning:"Connected to the sea, ships, or navigation.",
+    reason:"Topic-specific; appears in geography/history texts; not everyday speech.",
+    criteria:["topic-specific","non-fiction register","moderate frequency"],
+    prefix:"mari-", root:"mar", suffix:"-itime",
+    pM:{lang:"latin", text:"mare = sea (Latin)"},
+    rM:{lang:"latin", text:"mare = sea (Latin)"},
+    sM:{lang:"latin", text:"-itime = adjective ending"},
+    sentence:"Athens' <mark>maritime</mark> commerce shaped its identity." },
+  { w:"scarcity", level:"B2", pos:"noun",
+    meaning:"A shortage; not having enough of something.",
+    reason:"Economics/social-science word; abstract but common in news and academic contexts.",
+    criteria:["academic/news register","abstract noun","moderate frequency"],
+    prefix:null, root:"scarc", suffix:"-ity",
+    pM:null,
+    rM:{lang:"latin", text:"escars = scarce, limited (Old French)"},
+    sM:{lang:"latin", text:"-ity = state or condition"},
+    sentence:"Poseidon's curse threatened the city with water <mark>scarcity</mark>." },
+  { w:"pragmatic", level:"B2", pos:"adj",
+    meaning:"Dealing with things practically rather than theoretically.",
+    reason:"Used in news and professional contexts; concept clear but form needs exposure.",
+    criteria:["professional register","moderate frequency","non-transparent form"],
+    prefix:null, root:"pragmat", suffix:"-ic",
+    pM:null,
+    rM:{lang:"greek", text:"pragma = action, deed (Greek)"},
+    sM:{lang:"latin", text:"-ic = relating to"},
+    sentence:"A <mark>pragmatic</mark> reverence for the sea kept Poseidon honoured." },
 
-  {w:"prosperity",level:"B1",pos:"noun",
-   meaning:"The state of being successful and wealthy",
-   reason:"Common in school/history texts; 'prosper' known at A2–B1; suffix -ity is transparent",
-   criteria:["school text frequency","decodable","common concept"],
-   prefix:"pro-",root:"sper",suffix:"-ity",
-   pM:"pro- = forward (Latin)",rM:"to hope/thrive (Latin: sperare)",sM:"-ity = state or condition"},
-  {w:"beneficial",level:"B1",pos:"adj",
-   meaning:"Having a good or helpful effect on something",
-   reason:"Common in school and health contexts; root 'bene' (good) is recognizable; frequent in B1 texts",
-   criteria:["school frequency","decodable root","common in reading tests"],
-   prefix:"bene-",root:"fic",suffix:"-ial",
-   pM:"bene- = well/good (Latin)",rM:"to make/do (Latin: facere)",sM:"-ial = relating to"},
-  {w:"intervened",level:"B1",pos:"verb",
-   meaning:"Came between two sides to change or stop a situation",
-   reason:"Common in news and history texts at B1; 'inter-' prefix is taught early; concept is concrete",
-   criteria:["news/history frequency","transparent prefix","concrete meaning"],
-   prefix:"inter-",root:"ven",suffix:"-ed",
-   pM:"inter- = between (Latin)",rM:"to come (Latin: venire)",sM:"-ed = past tense"},
-  {w:"symbolizing",level:"B1",pos:"verb",
-   meaning:"Representing something else through a symbol or sign",
-   reason:"'Symbol' is A2; '-ize' verb form is B1; very common in literature and art discussions",
-   criteria:["common base word","transparent suffix","literature context"],
-   prefix:"sym-",root:"bol",suffix:"-izing",
-   pM:"sym- = together (Greek: syn)",rM:"to throw/mark (Greek: ballein)",sM:"-izing = present participle"},
-  {w:"practicality",level:"B1",pos:"noun",
-   meaning:"The quality of being useful and realistic in real situations",
-   reason:"'Practical' is A2–B1; '-ity' suffix is transparent; concept is everyday",
-   criteria:["common base word","transparent suffix","everyday concept"],
-   prefix:null,root:"practic",suffix:"-ality",
-   pM:null,rM:"to do/act (Greek: praktikos)",sM:"-ality = state or quality of"},
+  // B1
+  { w:"prosperity", level:"B1", pos:"noun",
+    meaning:"The state of being successful and wealthy.",
+    reason:"Common in school and history texts; 'prosper' is A2–B1; -ity is transparent.",
+    criteria:["school text frequency","decodable","common concept"],
+    prefix:"pro-", root:"sper", suffix:"-ity",
+    pM:{lang:"latin", text:"pro- = forward (Latin)"},
+    rM:{lang:"latin", text:"sperare = to hope, thrive (Latin)"},
+    sM:{lang:"latin", text:"-ity = state or condition"},
+    sentence:"The olive tree promised peace and <mark>prosperity</mark>." },
+  { w:"beneficial", level:"B1", pos:"adj",
+    meaning:"Having a good or helpful effect.",
+    reason:"Common in school and health contexts; root 'bene' (good) is recognisable.",
+    criteria:["school frequency","decodable root","frequent in reading"],
+    prefix:"bene-", root:"fic", suffix:"-ial",
+    pM:{lang:"latin", text:"bene- = well, good (Latin)"},
+    rM:{lang:"latin", text:"facere = to make, to do (Latin)"},
+    sM:{lang:"latin", text:"-ial = relating to"},
+    sentence:"Whichever gift was more <mark>beneficial</mark> would name the city." },
+  { w:"intervened", level:"B1", pos:"verb",
+    meaning:"Came between two sides to change or stop a situation.",
+    reason:"Common in news and history; 'inter-' is taught early; concrete meaning.",
+    criteria:["news/history frequency","transparent prefix","concrete meaning"],
+    prefix:"inter-", root:"ven", suffix:"-ed",
+    pM:{lang:"latin", text:"inter- = between (Latin)"},
+    rM:{lang:"latin", text:"venire = to come (Latin)"},
+    sM:{lang:"latin", text:"-ed = past tense"},
+    sentence:"Zeus <mark>intervened</mark> to avoid a destructive conflict." },
+  { w:"symbolizing", level:"B1", pos:"verb",
+    meaning:"Representing something else through a symbol or sign.",
+    reason:"'Symbol' is A2; '-ize' is B1; very common in literature and art.",
+    criteria:["common base word","transparent suffix","literature context"],
+    prefix:"sym-", root:"bol", suffix:"-izing",
+    pM:{lang:"greek", text:"syn = together (Greek)"},
+    rM:{lang:"greek", text:"ballein = to throw, mark (Greek)"},
+    sM:{lang:"latin", text:"-izing = present participle"},
+    sentence:"The olive tree <mark>symbolizing</mark> peace stood on the Acropolis." },
+  { w:"practicality", level:"B1", pos:"noun",
+    meaning:"The quality of being useful and realistic in real situations.",
+    reason:"'Practical' is A2–B1; '-ity' is transparent; everyday concept.",
+    criteria:["common base word","transparent suffix","everyday concept"],
+    prefix:null, root:"practic", suffix:"-ality",
+    pM:null,
+    rM:{lang:"greek", text:"praktikos = doing, acting (Greek)"},
+    sM:{lang:"latin", text:"-ality = state or quality of"},
+    sentence:"Athena's gift represented wisdom and <mark>practicality</mark>." },
 
-  {w:"competition",level:"A2",pos:"noun",
-   meaning:"A contest where people try to win against each other",
-   reason:"Taught at A1–A2; extremely common in daily life; fully transparent",
-   criteria:["very high frequency","everyday context","A2 exam word"],
-   prefix:"com-",root:"petit",suffix:"-ion",
-   pM:"com- = together (Latin)",rM:"to seek/strive (Latin: petere)",sM:"-ion = act or process"},
-  {w:"protection",level:"A2",pos:"noun",
-   meaning:"Keeping someone or something safe from harm",
-   reason:"'Protect' is A1–A2; concept is concrete and everyday; very high frequency",
-   criteria:["very high frequency","concrete meaning","A2 core vocabulary"],
-   prefix:"pro-",root:"tect",suffix:"-ion",
-   pM:"pro- = in front (Latin)",rM:"to cover (Latin: tegere)",sM:"-ion = act or result"},
-  {w:"disappointment",level:"A2",pos:"noun",
-   meaning:"The sad feeling when something is not as good as you hoped",
-   reason:"'Disappoint' taught at A2; emotion words are core early vocabulary",
-   criteria:["core emotion word","very high frequency","A2 school vocabulary"],
-   prefix:"dis-",root:"appoint",suffix:"-ment",
-   pM:"dis- = not/reverse (Latin)",rM:"to arrange (Old French: apointer)",sM:"-ment = result or state"},
-  {w:"destructive",level:"A2",pos:"adj",
-   meaning:"Causing serious damage or harm",
-   reason:"'Destroy/destruct' known at A2; '-ive' suffix is common and transparent",
-   criteria:["common base word","transparent suffix","high frequency adjective"],
-   prefix:"de-",root:"struct",suffix:"-ive",
-   pM:"de- = down/away (Latin)",rM:"to build (Latin: struere)",sM:"-ive = tending to"},
+  // A2
+  { w:"competition", level:"A2", pos:"noun",
+    meaning:"A contest where people try to win against each other.",
+    reason:"Taught at A1–A2; extremely common; fully transparent.",
+    criteria:["very high frequency","everyday context","A2 exam word"],
+    prefix:"com-", root:"petit", suffix:"-ion",
+    pM:{lang:"latin", text:"com- = together (Latin)"},
+    rM:{lang:"latin", text:"petere = to seek, strive (Latin)"},
+    sM:{lang:"latin", text:"-ion = act or process"},
+    sentence:"Zeus proposed a <mark>competition</mark> between the two gods." },
+  { w:"protection", level:"A2", pos:"noun",
+    meaning:"Keeping someone or something safe from harm.",
+    reason:"'Protect' is A1–A2; concept concrete and everyday; very high frequency.",
+    criteria:["very high frequency","concrete meaning","A2 core word"],
+    prefix:"pro-", root:"tect", suffix:"-ion",
+    pM:{lang:"latin", text:"pro- = in front of (Latin)"},
+    rM:{lang:"latin", text:"tegere = to cover (Latin)"},
+    sM:{lang:"latin", text:"-ion = act or result"},
+    sentence:"Athena offered her <mark>protection</mark> to the new city." },
+  { w:"disappointment", level:"A2", pos:"noun",
+    meaning:"The sad feeling when something is not as good as you hoped.",
+    reason:"'Disappoint' is taught at A2; emotion words are core early vocabulary.",
+    criteria:["core emotion word","very high frequency","A2 school word"],
+    prefix:"dis-", root:"appoint", suffix:"-ment",
+    pM:{lang:"latin", text:"dis- = not, reverse (Latin)"},
+    rM:{lang:"latin", text:"apointer = to arrange (Old French)"},
+    sM:{lang:"latin", text:"-ment = result or state of"},
+    sentence:"The salty spring brought only <mark>disappointment</mark>." },
+  { w:"destructive", level:"A2", pos:"adj",
+    meaning:"Causing serious damage or harm.",
+    reason:"'Destroy/destruct' is A2; '-ive' is a common transparent suffix.",
+    criteria:["common base word","transparent suffix","high-frequency adjective"],
+    prefix:"de-", root:"struct", suffix:"-ive",
+    pM:{lang:"latin", text:"de- = down, away (Latin)"},
+    rM:{lang:"latin", text:"struere = to build (Latin)"},
+    sM:{lang:"latin", text:"-ive = tending to"},
+    sentence:"Zeus stepped in to prevent a <mark>destructive</mark> conflict." },
 ];
 
+/* ============ STATE ============ */
 let active = "ALL";
 
-function setFilter(l) {
-  active = l;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.level === l));
-  render();
+/* ============ RENDER ============ */
+function counts() {
+  const c = { ALL: words.length, C2: 0, C1: 0, B2: 0, B1: 0, A2: 0 };
+  words.forEach(w => { if (c[w.level] !== undefined) c[w.level]++; });
+  return c;
+}
+
+function renderFilters() {
+  const c = counts();
+  document.querySelectorAll('.fbtn').forEach(btn => {
+    const l = btn.dataset.level;
+    btn.classList.toggle('active', l === active);
+    if (!btn.querySelector('.count')) {
+      btn.insertAdjacentHTML('beforeend', `<span class="count">${c[l]}</span>`);
+    } else {
+      btn.querySelector('.count').textContent = c[l];
+    }
+  });
 }
 
 function render() {
-  const q = document.getElementById('search').value.toLowerCase();
+  const q = document.getElementById('search').value.trim().toLowerCase();
   const filtered = words.filter(x =>
     (active === "ALL" || x.level === active) &&
-    (x.w.toLowerCase().includes(q) || x.meaning.toLowerCase().includes(q) || x.reason.toLowerCase().includes(q))
+    (!q || x.w.toLowerCase().includes(q) || x.meaning.toLowerCase().includes(q) ||
+     x.reason.toLowerCase().includes(q) || x.root.toLowerCase().includes(q))
   );
 
-  const counts = { C2: 0, C1: 0, B2: 0, B1: 0, A2: 0 };
-  words.forEach(x => { if (counts[x.level] !== undefined) counts[x.level]++; });
-  document.getElementById('stats').innerHTML = Object.entries(counts)
-    .map(([l, n]) => `<span class="stat ${l}">${l} · ${n} words</span>`).join('');
+  const grid = document.getElementById('grid');
+
+  document.getElementById('resultLine').textContent =
+    filtered.length === 0
+      ? 'No words match — try another search.'
+      : `Showing ${filtered.length} of ${words.length} words${active!=='ALL'?` at level ${active}`:''}${q?` matching "${q}"`:''}.`;
 
   if (!filtered.length) {
-    document.getElementById('grid').innerHTML = '<p class="none">No words found — try a different search.</p>';
+    grid.innerHTML = '<div class="empty">The oracle is silent.<br>Try a different search.</div>';
     return;
   }
 
-  document.getElementById('grid').innerHTML = filtered.map(x => {
+  grid.innerHTML = filtered.map(x => {
     const morphParts = [];
-    if (x.prefix) morphParts.push(`<div class="morph-item"><span class="morph-label">prefix</span><span class="morph-part prefix">${x.prefix}</span></div><span class="morph-plus">+</span>`);
-    morphParts.push(`<div class="morph-item"><span class="morph-label">root</span><span class="morph-part root">${x.root}</span></div>`);
-    if (x.suffix) morphParts.push(`<span class="morph-plus">+</span><div class="morph-item"><span class="morph-label">suffix</span><span class="morph-part suffix">${x.suffix}</span></div>`);
+    if (x.prefix) morphParts.push(`<div class="morph-tile prefix"><div class="tile-label">PREFIX</div><div class="tile-part">${x.prefix}</div></div>`);
+    if (x.prefix) morphParts.push(`<span class="morph-plus">+</span>`);
+    morphParts.push(`<div class="morph-tile root"><div class="tile-label">ROOT</div><div class="tile-part">${x.root}</div></div>`);
+    if (x.suffix) morphParts.push(`<span class="morph-plus">+</span>`);
+    if (x.suffix) morphParts.push(`<div class="morph-tile suffix"><div class="tile-label">SUFFIX</div><div class="tile-part">${x.suffix}</div></div>`);
 
-    const notes = [];
-    if (x.prefix) notes.push(`<b>${x.prefix}</b> ${x.pM}`);
-    notes.push(`<b>${x.root}</b> ${x.rM}`);
-    if (x.suffix) notes.push(`<b>${x.suffix}</b> ${x.sM}`);
+    const etymRows = [];
+    if (x.prefix && x.pM) etymRows.push(`<div class="row"><strong>${x.prefix}</strong><span class="${x.pM.lang}">${x.pM.text}</span></div>`);
+    if (x.rM) etymRows.push(`<div class="row"><strong>${x.root}</strong><span class="${x.rM.lang}">${x.rM.text}</span></div>`);
+    if (x.suffix && x.sM) etymRows.push(`<div class="row"><strong>${x.suffix}</strong><span class="${x.sM.lang}">${x.sM.text}</span></div>`);
 
-    return `<div class="card ${x.level}" onclick="this.classList.toggle('open')">
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      <div class="card-top">
+    return `<article class="card ${x.level}" data-word="${x.w}" onclick="this.classList.toggle('open')">
+      <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      <div class="card-head">
         <span class="word">${x.w}</span>
         <span class="badge ${x.level}">${x.level}</span>
         <span class="pos">${x.pos}</span>
       </div>
-      <p class="card-reason">↳ ${x.reason}</p>
-      <div class="detail">
+      <p class="reason">${x.reason}</p>
+      <div class="detail" onclick="event.stopPropagation()">
         <p class="meaning">${x.meaning}</p>
-        <div class="criteria">${x.criteria.map(c => `<span class="crit">${c}</span>`).join('')}</div>
-        <div class="morph">${morphParts.join('')}</div>
-        <div class="morph-notes">${notes.join('<br>')}</div>
+        <div class="criteria">${x.criteria.map(c=>`<span class="crit">${c}</span>`).join('')}</div>
+        <div class="morpho-label">Morphology</div>
+        <div class="morpho">${morphParts.join('')}</div>
+        <div class="etym">${etymRows.join('')}</div>
+        <div class="example"><span class="label">In context</span>${x.sentence}</div>
       </div>
-    </div>`;
+    </article>`;
   }).join('');
 }
 
+/* ============ INTERACTIONS ============ */
+function setFilter(l) { active = l; renderFilters(); render(); }
+
+document.getElementById('filters').addEventListener('click', e => {
+  const btn = e.target.closest('.fbtn');
+  if (btn) setFilter(btn.dataset.level);
+});
+
+document.getElementById('search').addEventListener('input', render);
+
+/* Passage keyword → scroll to card */
+document.querySelectorAll('.passage .keyword').forEach(k => {
+  k.addEventListener('click', () => {
+    const w = k.dataset.word;
+    if (active !== 'ALL' && active !== k.dataset.level) setFilter('ALL');
+    setTimeout(() => {
+      const card = document.querySelector(`.card[data-word="${w}"]`);
+      if (!card) return;
+      const top = card.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top, behavior: 'smooth' });
+      card.classList.add('open', 'flash');
+      setTimeout(() => card.classList.remove('flash'), 1300);
+    }, 60);
+  });
+});
+
+/* Passage collapse */
+const passageWrap = document.getElementById('passageWrap');
+const passageToggle = document.getElementById('passageToggle');
+passageToggle.addEventListener('click', () => {
+  const c = passageWrap.classList.toggle('collapsed');
+  passageToggle.textContent = c ? '▾ Read the full passage' : '▴ Collapse passage';
+});
+
+/* ============ INIT ============ */
+document.getElementById('grid').classList.add('dense-on');
+renderFilters();
 render();
 
-new QRCode(document.getElementById("qrcode"), {
-  text: "https://pppp2254.github.io/wordstructure-learning-from-greek-myth/",
-  width: 128,
-  height: 128,
-  colorDark: "#1C1810",
-  colorLight: "#ffffff",
-  correctLevel: QRCode.CorrectLevel.M
-});
 </script>
 </body>
 </html>
