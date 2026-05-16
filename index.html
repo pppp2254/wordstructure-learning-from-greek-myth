@@ -9,6 +9,7 @@ Athena vs Poseidon</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root {
   /* Parchment palette pulled from the slide */
@@ -1213,6 +1214,15 @@ Athena vs Poseidon: The Contest for the Name of Athens</h3>
     <button class="passage-toggle" id="passageToggle">▾ Read the full passage</button>
   </div>
 
+  <div class="qr-section">
+    <div class="qr-box" id="qrcode"></div>
+    <div class="qr-info">
+      <h3>SCAN TO OPEN</h3>
+      <p>Share this vocabulary explorer — point your phone camera at the QR code to open it instantly.</p>
+      <a class="url" href="https://pppp2254.github.io/wordstructure-learning-from-greek-myth/" target="_blank" rel="noopener">pppp2254.github.io/wordstructure-learning-from-greek-myth/</a>
+    </div>
+  </div>
+
   <img src="source/athena.png" alt="" class="footer-figure" aria-hidden="true">
   <footer>❦
 Athena vs Poseidon </footer>
@@ -1555,6 +1565,16 @@ passageToggle.addEventListener('click', () => {
 document.getElementById('grid').classList.add('dense-on');
 renderFilters();
 render();
+
+/* ============ QR CODE ============ */
+new QRCode(document.getElementById('qrcode'), {
+  text: 'https://pppp2254.github.io/wordstructure-learning-from-greek-myth/',
+  width: 140,
+  height: 140,
+  colorDark: '#1f1a14',
+  colorLight: '#ffffff',
+  correctLevel: QRCode.CorrectLevel.M
+});
 
 </script>
 </body>
