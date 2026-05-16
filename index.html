@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Athens Myth — Vocabulary Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root {
+  --cream: #F5F0E8;
+  --parchment: #EDE6D6;
+  --ink: #1C1810;
+  --ink-light: #4A4235;
+  --ink-faint: #9A8F7E;
+  --gold: #C4973A;
+  --gold-light: #F0D98A;
+  --C2-bg: #2D1B69; --C2-fg: #E8DFFF;
+  --C1-bg: #0D4A35; --C1-fg: #C8F0E0;
+  --B2-bg: #0D3A6B; --B2-fg: #C8E4FF;
+  --B1-bg: #7A3D00; --B1-fg: #FFE0B0;
+  --A2-bg: #6B1A0D; --A2-fg: #FFD5CC;
+  --prefix-bg: #FFF3CD; --prefix-fg: #7A4F00;
+  --root-bg: #D4EDDA; --root-fg: #0D4A20;
+  --suffix-bg: #CCE5FF; --suffix-fg: #0D3060;
+  --border: rgba(28,24,16,0.12);
+  --shadow: 0 2px 16px rgba(28,24,16,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(196,151,58,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 90%, rgba(196,151,58,0.06) 0%, transparent 50%);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  padding-bottom: 4rem;
+}
+
+/* HEADER */
+header {
+  text-align: center;
+  padding: 3rem 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '⚡';
+  position: absolute;
+  font-size: 180px;
+  opacity: 0.04;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.subtitle-tag {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 3px 12px;
+  border-radius: 2px;
+  margin-bottom: 1rem;
+}
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+h1 em {
+  font-style: italic;
+  color: var(--gold);
+}
+.header-desc {
+  font-size: 14px;
+  color: var(--ink-faint);
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* LEGEND */
+.legend {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  margin: 0 auto 1.5rem;
+  max-width: 860px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  color: var(--ink-faint);
+}
+.legend strong { color: var(--ink-light); }
+.leg { display: flex; align-items: center; gap: 5px; }
+.leg-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+/* CONTROLS */
+.controls {
+  max-width: 860px;
+  margin: 0 auto 1rem;
+  padding: 0 1.5rem;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 180px;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.35;
+  pointer-events: none;
+}
+input[type="text"] {
+  width: 100%;
+  padding: 9px 12px 9px 34px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+input[type="text"]:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(196,151,58,0.12);
+}
+.filter-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--ink-light);
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all .15s;
+  letter-spacing: 0.03em;
+}
+.filter-btn:hover { border-color: var(--ink-faint); }
+.filter-btn.active { color: white; border-color: transparent; }
+.filter-btn[data-level="ALL"].active { background: var(--ink); }
+.filter-btn[data-level="C2"].active { background: var(--C2-bg); }
+.filter-btn[data-level="C1"].active { background: var(--C1-bg); }
+.filter-btn[data-level="B2"].active { background: var(--B2-bg); }
+.filter-btn[data-level="B1"].active { background: var(--B1-bg); }
+.filter-btn[data-level="A2"].active { background: var(--A2-bg); }
+
+/* STATS */
+.stats {
+  max-width: 860px;
+  margin: 0 auto 1.5rem;
+  padding: 0 1.5rem;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.stat {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.stat.C2 { background: var(--C2-bg); color: var(--C2-fg); }
+.stat.C1 { background: var(--C1-bg); color: var(--C1-fg); }
+.stat.B2 { background: var(--B2-bg); color: var(--B2-fg); }
+.stat.B1 { background: var(--B1-bg); color: var(--B1-fg); }
+.stat.A2 { background: var(--A2-bg); color: var(--A2-fg); }
+
+/* HINT */
+.hint {
+  max-width: 860px;
+  margin: 0 auto 1rem;
+  padding: 0 1.5rem;
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+/* GRID */
+.grid {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+/* CARD */
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s, transform .1s;
+  position: relative;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  border-radius: 10px 0 0 10px;
+  opacity: 0;
+  transition: opacity .15s;
+}
+.card.C2::before { background: var(--C2-bg); }
+.card.C1::before { background: var(--C1-bg); }
+.card.B2::before { background: var(--B2-bg); }
+.card.B1::before { background: var(--B1-bg); }
+.card.A2::before { background: var(--A2-bg); }
+.card:hover { border-color: rgba(28,24,16,0.2); box-shadow: var(--shadow); transform: translateY(-1px); }
+.card:hover::before, .card.open::before { opacity: 1; }
+.card.open { border-color: rgba(28,24,16,0.18); box-shadow: var(--shadow); }
+
+.card-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.word {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  flex: 1;
+}
+.badge {
+  padding: 2px 9px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+.badge.C2 { background: var(--C2-bg); color: var(--C2-fg); }
+.badge.C1 { background: var(--C1-bg); color: var(--C1-fg); }
+.badge.B2 { background: var(--B2-bg); color: var(--B2-fg); }
+.badge.B1 { background: var(--B1-bg); color: var(--B1-fg); }
+.badge.A2 { background: var(--A2-bg); color: var(--A2-fg); }
+.pos {
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  color: var(--ink-faint);
+  background: var(--parchment);
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+.card-reason {
+  font-size: 11px;
+  color: var(--ink-faint);
+  font-style: italic;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* DETAIL */
+.detail {
+  display: none;
+  margin-top: 12px;
+  border-top: 1px solid var(--parchment);
+  padding-top: 12px;
+}
+.card.open .detail { display: block; }
+
+.meaning {
+  font-size: 13px;
+  color: var(--ink-light);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.criteria {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.crit {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  color: var(--ink-faint);
+  background: var(--parchment);
+}
+
+.morph {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  align-items: flex-end;
+}
+.morph-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.morph-label { font-size: 9px; font-family: 'DM Mono', monospace; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; }
+.morph-part { padding: 4px 10px; border-radius: 4px; font-size: 12px; font-family: 'DM Mono', monospace; font-weight: 500; }
+.prefix { background: var(--prefix-bg); color: var(--prefix-fg); }
+.root { background: var(--root-bg); color: var(--root-fg); }
+.suffix { background: var(--suffix-bg); color: var(--suffix-fg); }
+.morph-plus { font-size: 14px; color: var(--ink-faint); padding-bottom: 4px; }
+
+.morph-notes { font-size: 11px; color: var(--ink-faint); line-height: 1.8; }
+.morph-notes b { color: var(--ink-light); }
+
+.chevron {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 16px;
+  height: 16px;
+  color: var(--ink-faint);
+  transition: transform .2s;
+}
+.card.open .chevron { transform: rotate(180deg); }
+
+/* EMPTY */
+.none {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--ink-faint);
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 16px;
+  grid-column: 1/-1;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-family: 'DM Mono', monospace;
+}
+footer a { color: var(--gold); text-decoration: none; }
+
+/* DECO CHARACTERS */
+.deco-char {
+  position: absolute;
+  bottom: 0;
+  width: 90px;
+  height: auto;
+  opacity: 0.82;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.10));
+}
+.deco-left  { left: 2vw; }
+.deco-right { right: 2vw; }
+.deco-mid   { left: 50%; transform: translateX(-50%) scaleX(-1); display: none; }
+
+/* QR SECTION */
+.qr-section {
+  max-width: 860px;
+  margin: 2.5rem auto 0;
+  padding: 1.5rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  flex-wrap: wrap;
+}
+.qr-box {
+  flex-shrink: 0;
+  padding: 8px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.qr-info { flex: 1; min-width: 180px; }
+.qr-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.qr-info p {
+  font-size: 12px;
+  color: var(--ink-faint);
+  line-height: 1.6;
+}
+.qr-info a {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--gold);
+  word-break: break-all;
+}
+
+@media (max-width: 520px) {
+  .grid { grid-template-columns: 1fr; }
+  .controls { gap: 6px; }
+  .filter-btn { padding: 7px 11px; font-size: 11px; }
+  .deco-char { width: 60px; }
+  .qr-section { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="source/images (1).jpeg" alt="" class="deco-char deco-left">
+  <img src="source/images.jpeg"     alt="" class="deco-char deco-right">
+  <div class="subtitle-tag">CEFR Vocabulary Explorer</div>
+  <h1>Athena vs Poseidon<br><em>Word Study</em></h1>
+  <p class="header-desc">Hard words from the Athens myth passage — categorized by level with prefix, root &amp; suffix breakdown.</p>
+</header>
+
+<div class="legend">
+  <strong>Level based on →</strong>
+  <span class="leg"><span class="leg-dot" style="background:#C4973A"></span>Frequency</span>
+  <span class="leg"><span class="leg-dot" style="background:#0D4A35"></span>Register</span>
+  <span class="leg"><span class="leg-dot" style="background:#2D1B69"></span>Decodability</span>
+  <span class="leg"><span class="leg-dot" style="background:#6B1A0D"></span>Figurative use</span>
+</div>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="search" placeholder="Search words or meanings…" oninput="render()">
+  </div>
+  <button class="filter-btn active" data-level="ALL" onclick="setFilter('ALL')">All</button>
+  <button class="filter-btn" data-level="C2" onclick="setFilter('C2')">C2</button>
+  <button class="filter-btn" data-level="C1" onclick="setFilter('C1')">C1</button>
+  <button class="filter-btn" data-level="B2" onclick="setFilter('B2')">B2</button>
+  <button class="filter-btn" data-level="B1" onclick="setFilter('B1')">B1</button>
+  <button class="filter-btn" data-level="A2" onclick="setFilter('A2')">A2</button>
+</div>
+
+<div class="stats" id="stats"></div>
+<p class="hint">↓ Tap any card to expand the morphology breakdown</p>
+<div class="grid" id="grid"></div>
+
+<div style="max-width:860px;margin:2rem auto 0;padding:0 1.5rem;display:flex;justify-content:center;">
+  <img src="source/images (2).jpeg" alt="" style="width:80px;opacity:0.75;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.10));">
+</div>
+
+<div class="qr-section" style="max-width:860px;margin:1.2rem auto 0;">
+  <div class="qr-box" id="qrcode"></div>
+  <div class="qr-info">
+    <h3>Scan to open on any device</h3>
+    <p>Share this vocabulary explorer with classmates — just point your phone camera at the QR code.</p>
+    <a href="https://pppp2254.github.io/wordstructure-learning-from-greek-myth/" target="_blank">
+      pppp2254.github.io/wordstructure-learning-from-greek-myth/
+    </a>
+  </div>
+</div>
+
+<footer>
+  <p>Athena vs Poseidon · Vocabulary Explorer · Built for classroom use</p>
+</footer>
+
+<script>
+const words=[
+  {w:"necessitated",level:"C2",pos:"verb",
+   meaning:"Made something unavoidable or absolutely required",
+   reason:"Formal/academic register; rarely used in speech; passive/impersonal tone marks it as advanced writing",
+   criteria:["low frequency","formal register","not in everyday speech"],
+   prefix:"necess-",root:"necess",suffix:"-ated",
+   pM:"necess- = unavoidable (Latin: necesse)",rM:"unavoidable/essential (Latin)",sM:"-ated = past tense verb"},
+  {w:"exemplified",level:"C2",pos:"verb",
+   meaning:"Was a typical example of something; illustrated clearly",
+   reason:"Academic/formal verb; used in written analysis; requires understanding of abstract argument structure",
+   criteria:["academic register","formal written use","low spoken frequency"],
+   prefix:"ex-",root:"empl",suffix:"-ified",
+   pM:"ex- = out (Latin)",rM:"example/sample (Latin: exemplum)",sM:"-ified = made into, past tense"},
+  {w:"ambiguity",level:"C2",pos:"noun",
+   meaning:"The state of having more than one possible meaning or interpretation",
+   reason:"Abstract concept requiring metalinguistic awareness; used in academic and critical analysis",
+   criteria:["abstract meaning","academic register","analytical use"],
+   prefix:"ambi-",root:"ig",suffix:"-uity",
+   pM:"ambi- = both sides/around (Latin)",rM:"to drive/lead (Latin: agere)",sM:"-uity = state or quality"},
+
+  {w:"encapsulates",level:"C1",pos:"verb",
+   meaning:"Expresses the essential features of something briefly and clearly",
+   reason:"Metaphorical — not literally 'put in a capsule'; common in academic writing; formal register",
+   criteria:["metaphorical meaning","formal register","academic writing"],
+   prefix:"en-",root:"capsul",suffix:"-ates",
+   pM:"en- = into (Latin)",rM:"small container (Latin: capsula)",sM:"-ates = 3rd person singular"},
+  {w:"patronage",level:"C1",pos:"noun",
+   meaning:"Support or protection given by a powerful person, deity, or institution",
+   reason:"Formal/historical register; concept requires cultural knowledge; not common in everyday speech",
+   criteria:["cultural knowledge needed","formal register","low frequency"],
+   prefix:"patron-",root:"patron",suffix:"-age",
+   pM:"patron- = protector (Latin: patronus)",rM:"father/protector (Latin: pater)",sM:"-age = state or result of"},
+  {w:"reverence",level:"C1",pos:"noun",
+   meaning:"Deep respect and admiration, especially toward something sacred",
+   reason:"Formal and literary; nuance between plain 'respect' and deep spiritual admiration is advanced",
+   criteria:["nuanced meaning","literary/formal","low spoken frequency"],
+   prefix:"re-",root:"ver",suffix:"-ence",
+   pM:"re- = intensifier (Latin)",rM:"to fear/respect (Latin: vereri)",sM:"-ence = state or quality"},
+  {w:"mythical",level:"C1",pos:"adj",
+   meaning:"Existing only in myth; or so impressive it seems unreal",
+   reason:"The figurative sense ('mythical status') goes beyond the literal; requires understanding of idiomatic extension",
+   criteria:["figurative/idiomatic use","dual meaning","nuance required"],
+   prefix:"myth-",root:"myth",suffix:"-ical",
+   pM:"myth- = story/legend (Greek: mythos)",rM:"story (Greek)",sM:"-ical = of or relating to"},
+
+  {w:"unpredictability",level:"B2",pos:"noun",
+   meaning:"The quality of being impossible to foresee",
+   reason:"Fully decodable: un- + predict + -able + -ity; 'predict' is B1; stacking affixes pushes it to B2",
+   criteria:["decodable from parts","compound affix","B1 base word"],
+   prefix:"un-",root:"predict",suffix:"-ability",
+   pM:"un- = not (Old English)",rM:"to say before (Latin: praedicere)",sM:"-ability = quality of being able"},
+  {w:"mythological",level:"B2",pos:"adj",
+   meaning:"Relating to myths and ancient legendary stories",
+   reason:"Fully decodable; 'myth' known at A2, '-logy' at B1; long but transparent meaning",
+   criteria:["fully decodable","common root","transparent meaning"],
+   prefix:"mytho-",root:"log",suffix:"-ical",
+   pM:"mytho- = story (Greek: mythos)",rM:"word/study (Greek: logos)",sM:"-ical = relating to"},
+  {w:"resilience",level:"B2",pos:"noun",
+   meaning:"The ability to recover quickly from difficulty or setbacks",
+   reason:"Common in psychology and news; non-obvious etymology (Latin 'salire'); requires exposure",
+   criteria:["non-obvious etymology","common in media","abstract concept"],
+   prefix:"re-",root:"sili",suffix:"-ence",
+   pM:"re- = back (Latin)",rM:"to spring/jump (Latin: salire)",sM:"-ence = state or quality"},
+  {w:"dominion",level:"B2",pos:"noun",
+   meaning:"Power and authority over a territory or people",
+   reason:"Formal/historical word; appears in non-fiction; slightly archaic feel",
+   criteria:["formal/archaic register","historical context","moderate frequency"],
+   prefix:"domin-",root:"domin",suffix:"-ion",
+   pM:"domin- = lord/master (Latin: dominus)",rM:"to rule (Latin: dominari)",sM:"-ion = state or condition"},
+  {w:"maritime",level:"B2",pos:"adj",
+   meaning:"Connected to the sea, ships, or navigation",
+   reason:"Topic-specific vocabulary; appears in geography/history texts; not everyday conversation",
+   criteria:["topic-specific","non-fiction register","moderate frequency"],
+   prefix:"mari-",root:"mar",suffix:"-itime",
+   pM:"mari- = sea (Latin: mare)",rM:"sea (Latin: mare)",sM:"-itime = adjective suffix"},
+  {w:"scarcity",level:"B2",pos:"noun",
+   meaning:"A shortage; not having enough of something",
+   reason:"Economics/social science word; abstract but common in news and academic contexts",
+   criteria:["academic/news register","abstract noun","moderate frequency"],
+   prefix:null,root:"scarc",suffix:"-ity",
+   pM:null,rM:"scarce/limited (Old French: escars)",sM:"-ity = state or condition"},
+  {w:"pragmatic",level:"B2",pos:"adj",
+   meaning:"Dealing with things practically rather than theoretically",
+   reason:"Used in news and professional contexts; concept is clear but word form requires exposure",
+   criteria:["professional register","moderate frequency","non-transparent form"],
+   prefix:null,root:"pragmat",suffix:"-ic",
+   pM:null,rM:"action/deed (Greek: pragma)",sM:"-ic = relating to"},
+
+  {w:"prosperity",level:"B1",pos:"noun",
+   meaning:"The state of being successful and wealthy",
+   reason:"Common in school/history texts; 'prosper' known at A2–B1; suffix -ity is transparent",
+   criteria:["school text frequency","decodable","common concept"],
+   prefix:"pro-",root:"sper",suffix:"-ity",
+   pM:"pro- = forward (Latin)",rM:"to hope/thrive (Latin: sperare)",sM:"-ity = state or condition"},
+  {w:"beneficial",level:"B1",pos:"adj",
+   meaning:"Having a good or helpful effect on something",
+   reason:"Common in school and health contexts; root 'bene' (good) is recognizable; frequent in B1 texts",
+   criteria:["school frequency","decodable root","common in reading tests"],
+   prefix:"bene-",root:"fic",suffix:"-ial",
+   pM:"bene- = well/good (Latin)",rM:"to make/do (Latin: facere)",sM:"-ial = relating to"},
+  {w:"intervened",level:"B1",pos:"verb",
+   meaning:"Came between two sides to change or stop a situation",
+   reason:"Common in news and history texts at B1; 'inter-' prefix is taught early; concept is concrete",
+   criteria:["news/history frequency","transparent prefix","concrete meaning"],
+   prefix:"inter-",root:"ven",suffix:"-ed",
+   pM:"inter- = between (Latin)",rM:"to come (Latin: venire)",sM:"-ed = past tense"},
+  {w:"symbolizing",level:"B1",pos:"verb",
+   meaning:"Representing something else through a symbol or sign",
+   reason:"'Symbol' is A2; '-ize' verb form is B1; very common in literature and art discussions",
+   criteria:["common base word","transparent suffix","literature context"],
+   prefix:"sym-",root:"bol",suffix:"-izing",
+   pM:"sym- = together (Greek: syn)",rM:"to throw/mark (Greek: ballein)",sM:"-izing = present participle"},
+  {w:"practicality",level:"B1",pos:"noun",
+   meaning:"The quality of being useful and realistic in real situations",
+   reason:"'Practical' is A2–B1; '-ity' suffix is transparent; concept is everyday",
+   criteria:["common base word","transparent suffix","everyday concept"],
+   prefix:null,root:"practic",suffix:"-ality",
+   pM:null,rM:"to do/act (Greek: praktikos)",sM:"-ality = state or quality of"},
+
+  {w:"competition",level:"A2",pos:"noun",
+   meaning:"A contest where people try to win against each other",
+   reason:"Taught at A1–A2; extremely common in daily life; fully transparent",
+   criteria:["very high frequency","everyday context","A2 exam word"],
+   prefix:"com-",root:"petit",suffix:"-ion",
+   pM:"com- = together (Latin)",rM:"to seek/strive (Latin: petere)",sM:"-ion = act or process"},
+  {w:"protection",level:"A2",pos:"noun",
+   meaning:"Keeping someone or something safe from harm",
+   reason:"'Protect' is A1–A2; concept is concrete and everyday; very high frequency",
+   criteria:["very high frequency","concrete meaning","A2 core vocabulary"],
+   prefix:"pro-",root:"tect",suffix:"-ion",
+   pM:"pro- = in front (Latin)",rM:"to cover (Latin: tegere)",sM:"-ion = act or result"},
+  {w:"disappointment",level:"A2",pos:"noun",
+   meaning:"The sad feeling when something is not as good as you hoped",
+   reason:"'Disappoint' taught at A2; emotion words are core early vocabulary",
+   criteria:["core emotion word","very high frequency","A2 school vocabulary"],
+   prefix:"dis-",root:"appoint",suffix:"-ment",
+   pM:"dis- = not/reverse (Latin)",rM:"to arrange (Old French: apointer)",sM:"-ment = result or state"},
+  {w:"destructive",level:"A2",pos:"adj",
+   meaning:"Causing serious damage or harm",
+   reason:"'Destroy/destruct' known at A2; '-ive' suffix is common and transparent",
+   criteria:["common base word","transparent suffix","high frequency adjective"],
+   prefix:"de-",root:"struct",suffix:"-ive",
+   pM:"de- = down/away (Latin)",rM:"to build (Latin: struere)",sM:"-ive = tending to"},
+];
+
+let active = "ALL";
+
+function setFilter(l) {
+  active = l;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.level === l));
+  render();
+}
+
+function render() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const filtered = words.filter(x =>
+    (active === "ALL" || x.level === active) &&
+    (x.w.toLowerCase().includes(q) || x.meaning.toLowerCase().includes(q) || x.reason.toLowerCase().includes(q))
+  );
+
+  const counts = { C2: 0, C1: 0, B2: 0, B1: 0, A2: 0 };
+  words.forEach(x => { if (counts[x.level] !== undefined) counts[x.level]++; });
+  document.getElementById('stats').innerHTML = Object.entries(counts)
+    .map(([l, n]) => `<span class="stat ${l}">${l} · ${n} words</span>`).join('');
+
+  if (!filtered.length) {
+    document.getElementById('grid').innerHTML = '<p class="none">No words found — try a different search.</p>';
+    return;
+  }
+
+  document.getElementById('grid').innerHTML = filtered.map(x => {
+    const morphParts = [];
+    if (x.prefix) morphParts.push(`<div class="morph-item"><span class="morph-label">prefix</span><span class="morph-part prefix">${x.prefix}</span></div><span class="morph-plus">+</span>`);
+    morphParts.push(`<div class="morph-item"><span class="morph-label">root</span><span class="morph-part root">${x.root}</span></div>`);
+    if (x.suffix) morphParts.push(`<span class="morph-plus">+</span><div class="morph-item"><span class="morph-label">suffix</span><span class="morph-part suffix">${x.suffix}</span></div>`);
+
+    const notes = [];
+    if (x.prefix) notes.push(`<b>${x.prefix}</b> ${x.pM}`);
+    notes.push(`<b>${x.root}</b> ${x.rM}`);
+    if (x.suffix) notes.push(`<b>${x.suffix}</b> ${x.sM}`);
+
+    return `<div class="card ${x.level}" onclick="this.classList.toggle('open')">
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <div class="card-top">
+        <span class="word">${x.w}</span>
+        <span class="badge ${x.level}">${x.level}</span>
+        <span class="pos">${x.pos}</span>
+      </div>
+      <p class="card-reason">↳ ${x.reason}</p>
+      <div class="detail">
+        <p class="meaning">${x.meaning}</p>
+        <div class="criteria">${x.criteria.map(c => `<span class="crit">${c}</span>`).join('')}</div>
+        <div class="morph">${morphParts.join('')}</div>
+        <div class="morph-notes">${notes.join('<br>')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+render();
+
+new QRCode(document.getElementById("qrcode"), {
+  text: "https://pppp2254.github.io/wordstructure-learning-from-greek-myth/",
+  width: 128,
+  height: 128,
+  colorDark: "#1C1810",
+  colorLight: "#ffffff",
+  correctLevel: QRCode.CorrectLevel.M
+});
+</script>
+</body>
+</html>
